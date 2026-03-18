@@ -1,0 +1,35 @@
+<body>
+    <button 
+    style="background-color: rgb(242, 130, 208)">
+    <a style="color:#ffffff" href="/">
+        GO BACK
+    </a>
+</button>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Group</th>
+            <th scope="col">Life Problems</th>
+            <th scope="col">Info</th>
+            <th scope="col">Hobby</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each students}}
+            <tr>
+                <th scope="row">{{this.id}}</th>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.group_name}}</td>
+                <td>{{this.life_problems}}</td>
+                <td>{{this.additional_info}}</td>
+                <td>{{this.hobby}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    <p><a style="color:rgb(229, 102, 168)" href="/students/create">ADD STUDENT</a></p>
+</body>
