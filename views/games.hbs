@@ -1,0 +1,32 @@
+<button 
+    style="background-color: rgb(242, 130, 208)">
+    <a style="color:#ffffff" href="/">
+        GO BACK
+    </a>
+</button>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Mode</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Created at</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {{#each games}}
+            <tr>
+                <th scope="row">{{this.id}}</th>
+                <td>{{this.game_name}}</td>
+                <td>{{this.game_mode}}</td>
+                <td>{{this.cost}}</td>
+                <td>{{this.created_at}}</td>
+                
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    <p><a style="color:rgb(229, 102, 168)" href="/games/create">ADD GAME</a></p>
+</body>

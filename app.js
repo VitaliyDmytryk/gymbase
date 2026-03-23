@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
+import gamesRouter from './routes/games.js'
 import weaponRouter from './routes/dead_space.js'
 import carsRouter from './routes/cars.js'
 import slonikiRouter from './routes/sloniki.js'
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/students', usersRouter);
+app.use('/games', gamesRouter);
 app.use('/weapons', weaponRouter);
 app.use('/sloniki', slonikiRouter)
 app.use('/cars', carsRouter);

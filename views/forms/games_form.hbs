@@ -1,0 +1,39 @@
+<button 
+    style="background-color: rgb(242, 130, 208)">
+    <a style="color:#ffffff" href="/games">
+        GO BACK
+    </a>
+</button>
+<form method="POST" action="{{action}}">
+    <fieldset>
+        <label>
+            Name
+            <input
+                    name="name"
+                    placeholder="Enter the name of the game"
+                    autocomplete=""
+            />
+        </label>
+        <label>
+            Mode
+            <input
+                    name="mode"
+                    placeholder="Is this game online or offline? Online/Offline/Both"
+                    autocomplete=""
+            />
+        </label>
+        <label>
+            Cost
+            <input
+                    name="cost"
+                    placeholder="How much is this game cost?"
+                    autocomplete=""
+            />
+        </label>
+    </fieldset>
+
+    <input
+            type="submit"
+            value="SAVE"
+    />
+</form>
