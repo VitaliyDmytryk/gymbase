@@ -11,11 +11,11 @@
     </div>
     <div>
       <label>Damage Dealt:</label>
-      <input type="number" name="damage_dealth" value="{{item.damage_dealth}}" step="1" min="1">
+      <input type="number" name="damage_dealth" value="{{item.damage_dealth}}" step="1" min="1" max="20">
     </div>
     <div>
       <label>Reload Seconds:</label>
-      <input type="number" name="reload_seconds" value="{{item.reload_seconds}}" step="1" min="1">
+      <input type="number" name="reload_seconds" value="{{item.reload_seconds}}" step="1" min="1" max="14">
     </div>
     <div>
       <label>Additional Info:</label>
@@ -39,6 +39,7 @@
           <th>damage_dealth</th>
           <th>reload_seconds</th>
           <th>additional_info</th>
+          <th>Created at</th>
           <th>Actions</th>
       </tr>
       </thead>
@@ -51,6 +52,7 @@
               <td>{{this.damage_dealth}}</td>
               <td>{{this.reload_seconds}}</td>
               <td>{{this.additional_info}}</td>
+              <td>{{this.created_at}}</td>
               <td>
                   <button style="background-color: #000; padding: 5px 10px;">
                       <a style="color:#fff; text-decoration: none;" href="/weapons/edit/{{this.id}}">EDIT</a>
