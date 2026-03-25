@@ -4,6 +4,12 @@
         GO BACK
     </a>
 </button>
+  <button 
+    style="background-color: rgb(242, 130, 208)">
+    <a style="color:#ffffff" href="/heroes/add">
+        ADD HERO
+    </a>
+</button>
 
 <table>
     <thead>
@@ -13,7 +19,7 @@
         <th scope="col">Клас</th>
         <th scope="col">Роль</th>
         <th scope="col">Тип атаки</th>
-        <th scope="col">Дата створення</th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -24,10 +30,10 @@
             <td>{{this.hero_class}}</td> 
             <td>{{this.role}}</td>       
             <td>{{this.attack_type}}</td>
-            <td>
-                <a href="/heroes/edit/{{this.id}}" class="btn-edit">Edit</a>
-                <a href="/heroes/delete/{{this.id}}" class="btn-delete" onclick="return confirm('Видалити {{this.name}}?')">Delete</a>
-            </td>
+
+            <td><a href="/heroes/edit/{{this.id}}" class="btn-edit">Edit</a></td>
+            <td><a href="/heroes/delete/{{this.id}}" class="btn-delete" onclick="return confirm('Видалити {{this.name}}?')">Delete</a></td>
+            
         </tr>
         {{else}}
         <tr>
