@@ -24,6 +24,10 @@ router.get('/', async function(req, res, next) {
 router.post('/', async (req, res) => {
   const { car_brand, car_model, engine_type, horsepower, weight, acceleration_0_to_100, price } = req.body; 
 
+  if (horsepower < 0 || weight < 0 || acceleration_0_to_100 < 0 || price < 0) {
+    return res.status(400).send('Помилка: Значення потужності, ваги, розгону та ціни можуть бути тільки додатні!');
+  }
+
   try {
     await db.query(
       `INSERT INTO cars 
@@ -37,10 +41,8 @@ router.post('/', async (req, res) => {
     console.error('Помилка при створенні машини:', error);
     res.status(500).send('Помилка при збереженні в базу даних');
   }
-  if (horsepower < 0 || weight < 0 || acceleration_0_to_100 < 0 || price < 0) {
-    return res.status(400).send('Помилка: Значення потужності, ваги, розгону та ціни можуть бути тільки додатні!');
-  }
 });
+
 
 
 router.get('/edit/:id', async (req, res) => {
