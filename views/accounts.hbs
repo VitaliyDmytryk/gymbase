@@ -1,0 +1,199 @@
+<style>
+  /*BACKGROUND*/
+  body {
+    background-color: #fc85bc;
+    margin: 0;
+    padding: 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+  }
+
+  /*STYLES. MAIN BOX*/
+  .main-container {
+    background: rgba(250, 159, 209, 0.884);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 95%;
+    max-width: 900px;
+    margin: 20px auto;
+  }
+
+  /*STYLES. PINK BUTTONS*/
+  .btn-pink {
+    background-color: rgb(233, 75, 167);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+    margin-bottom: 20px;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+
+  .btn-pink:hover {
+    background-color: rgb(220, 110, 180);
+  }
+
+  /*STYLES. TABLE*/
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  th {
+    text-align: center;
+    padding: 12px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+
+  td {
+    color: #555;
+    font-size: 0.95rem;
+    text-align: center;
+    padding: 10px;
+  }
+
+  /*EDIT BUTTON*/
+  .edit-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    margin-bottom: 0;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  .form-group label {
+    display: block;
+    color: #d63384;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ffb3d9;
+    border-radius: 10px;
+    box-sizing: border-box;
+    outline: none;
+  }
+
+  .form-group input:focus {
+    border-color: #e94ba7;
+  }
+</style>
+
+{{! MAIN HBS CODE. ADDING BUTTONS AND SO ON. }}
+{{#if mode}}
+  <div class="main-container">
+    <h2>{{pageTitle}}</h2>
+    <form action="{{action}}" method="POST">
+      <div class="form-group">
+        <label>Email:</label>
+        <input
+          type="email"
+          name="email"
+          value="{{item.email}}"
+          placeholder="Enter email..."
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>User Name:</label>
+        <input
+          type="text"
+          name="user_name"
+          value="{{item.user_name}}"
+          placeholder="Enter username..."
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Password:</label>
+        <input
+          type="password"
+          name="password"
+          value="{{item.password}}"
+          placeholder="Enter password..."
+          required
+        />
+      </div>
+
+      <div style="margin-top: 20px;">
+        <button
+          type="submit"
+          class="btn-pink"
+          style="width: 100%;"
+        >SAVE</button>
+        <a
+          href="/accounts"
+          class="btn-pink"
+          style="width: 100%; text-align: center; background-color: #ffb3d9; color: #d63384 !important;"
+        >CANCEL</a>
+      </div>
+    </form>
+  </div>
+{{else}}
+  <div class="main-container">
+    <a href="/" class="btn-pink">BACK</a>
+
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Email</th>
+          <th scope="col">User Name</th>
+          <th scope="col">Added At</th>
+          <th scope="col" colspan="2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each accounts}}
+          <tr>
+            <th scope="row">{{this.id}}</th>
+            <td>{{this.email}}</td>
+            <td>{{this.user_name}}</td>
+            <td>{{this.adding_time}}</td>
+
+            <td>
+              <a
+                href="/accounts/edit/{{this.id}}"
+                class="btn-pink edit-btn"
+              >EDIT</a>
+            </td>
+            <td>
+              <a
+                href="/accounts/delete/{{this.id}}"
+                class="btn-pink edit-btn"
+                onclick="return confirm('Are you sure?')"
+              >DELETE</a>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <a href="/accounts/createAccount" class="btn-pink">Create Account</a>
+  </div>
+{{/if}}

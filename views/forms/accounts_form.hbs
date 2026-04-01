@@ -1,0 +1,242 @@
+<style>
+  /*BACKGROUND*/
+  body {
+    background-color: #fc85bc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  /*STYLES. WHITE BOX*/
+  .main-container {
+    background: rgba(250, 159, 209, 0.884);
+    padding: 30px;
+    border-radius: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  /*STYLES. PINK BUTTONS*/
+  .btn-pink {
+    background-color: rgb(233, 75, 167);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+    margin-bottom: 20px;
+    color: #ffffff !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+
+  .btn-pink:hover {
+    background-color: rgb(220, 110, 180);
+  }
+
+  /*STYLE. ERROR MESSAGE*/
+  .error-box {
+    background-color: #ff1289;
+    color: white;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  /*STYLE. INPUT AREA*/
+  fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: rgb(228, 23, 142);
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid rgb(233, 75, 167);
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin-top: 5px;
+  }
+
+  input:focus {
+    border-color: rgb(242, 130, 208);
+    outline: none;
+  }
+
+  /*STYLE. HIDING BUTTON*/
+  .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .toggle-btn {
+    position: absolute;
+    right: 12px;
+    top: calc(40% + 2.5px);
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0;
+    color: rgb(233, 75, 167);
+  }
+
+  /* STYLE. CAT IMAGES*/
+  .cats-background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .cat-gif {
+    position: absolute;
+  }
+
+  /*COORDINATES OF CATS*/
+  #cat-left-top {
+    width: 180px;
+    top: 50px;
+    left: 100px;
+  }
+  #cat-left-bottom {
+    width: 180px;
+    bottom: 90px;
+    left: 80px;
+  }
+  #cat-right-top {
+    width: 180px;
+    top: 50px;
+    right: 120px;
+  }
+  #cat-right-bottom {
+    width: 300px;
+    bottom: 30px;
+    right: 30px;
+  }
+</style>
+
+{{! GIF LINKS }}
+<div class="cats-background-layer">
+  <img
+    src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHloeXJwZmVlM2JmazVuejcyZ29uYmlxZW83NHl5azh2NXVmc3NwMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/UQ1EI1ML2ABQdbebup/giphy.gif"
+    alt="cat1"
+    class="cat-gif"
+    id="cat-left-top"
+  />
+  <img
+    src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTdodXhqc3ltOXNmNXJhbGowcHhscnBhcGU4YmN1MGl2Z3huaTFwNCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/koyg5AFHASibQ6TyQH/giphy.gif"
+    alt="cat2"
+    class="cat-gif"
+    id="cat-left-bottom"
+  />
+  <img
+    src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bTlpY2lqdnoxc2lkZGZzb25kcjY0MThpbGthMTVrNWZpdmlzM205YiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/mTs11L9uuyGiI/giphy.gif"
+    alt="cat3"
+    class="cat-gif"
+    id="cat-right-bottom"
+  />
+  <img
+    src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bTR1bjVwMndtZ2o0c3MxNXRlenV3Y3BoaDFjdjZpeTRlZGttYzRrYSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/eEMESo8e59qUP4J3r6/giphy.gif"
+    alt="cat4"
+    class="cat-gif"
+    id="cat-right-top"
+  />
+</div>
+
+{{! MAIN HBS CODE. ADDING BUTTONS AND SO ON. }}
+<div class="main-container">
+  <a href="/accounts" class="btn-pink">CANCEL</a>
+
+  {{#if error}}
+    <div class="error-box">
+      {{error}}
+    </div>
+  {{/if}}
+
+  <form method="POST" action="{{action}}">
+    <fieldset>
+      <label>
+        Email
+        <input
+          type="text"
+          name="email"
+          placeholder="Enter email..."
+          value="{{item.email}}"
+          aria-required="true"
+        />
+      </label>
+
+      <label>
+        User Name
+        <input
+          type="text"
+          name="user_name"
+          placeholder="Enter username..."
+          value="{{item.user_name}}"
+          aria-required="true"
+        />
+      </label>
+      <label>
+        Password
+        <div class="password-wrapper">
+          <input
+            type="password"
+            name="password"
+            id="password-input"
+            placeholder="Enter password..."
+            value="{{item.password}}"
+            aria-required="true"
+          />
+          <button
+            type="button"
+            id="toggle-password"
+            class="toggle-btn"
+          >🙈</button>
+        </div>
+      </label>
+    </fieldset>
+
+    <input type="submit" value="SAVE" class="btn-pink" style="width: 100%;" />
+  </form>
+</div>
+
+{{! SMALL HIDING-SHOWING BUTTON }}
+<script>
+  const toggleBtn = document.getElementById('toggle-password'); const
+  passwordInput = document.getElementById('password-input');
+  toggleBtn.addEventListener('click', () => { const isPassword =
+  passwordInput.type === 'password'; passwordInput.type = isPassword ? 'text' :
+  'password'; toggleBtn.textContent = isPassword ? '🙉' : '🙈'; });
+</script>
