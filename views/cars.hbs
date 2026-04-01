@@ -4,113 +4,225 @@
     <meta charset="UTF-8">
     <title>Управління автомобілями</title>
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            font-family: Arial, sans-serif;
 
-        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; background-color: #ffffff; color: #2d3748; }
-        h2 { color: #1a202c; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; }
+            color: #e2e8f0;
+        }
+        .main-title {
+            font-family: 'Sofachrome', sans-serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 56px; 
+            color: #ffffff;
+            margin-top: 10px;
+            margin-bottom: 35px;
+            letter-spacing: 4px;
+
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2), 
+                         0 5px 15px rgba(0, 0, 0, 0.9); 
+        }
+
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .wrapper {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h2 { color: #ffffff; border-bottom: 2px solid rgba(74, 85, 104, 0.8); padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #4a5568; }
-        
+
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #cbd5e0; }
+
+      
         .form-group input { 
             width: 100%; padding: 10px; box-sizing: border-box; 
-            background-color: #f7fafc; border: 1px solid #e2e8f0; 
-            color: #2d3748; border-radius: 4px; transition: border-color 0.2s;
+            background-color: #2d3748; 
+            border: 1px solid #4a5568; 
+            color: #ffffff; 
+            border-radius: 4px; transition: border-color 0.2s;
         }
-        .form-group input:focus { outline: none; border-color: #3182ce; background-color: #ffffff; }
-        .form-group input::placeholder { color: #a0aec0; }
+        .form-group input:focus { outline: none; border-color: #63b3ed; background-color: #1a202c; }
+
+        .form-group input::placeholder { color: #718096; }
+
+   
+        .card { 
+            background: rgba(26, 32, 44, 0.75); 
+            backdrop-filter: blur(8px);
+            padding: 20px; border-radius: 8px; margin-bottom: 40px; 
+            border: 1px solid rgba(74, 85, 104, 0.5); 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); 
+        }
+
+        .car-item { 
+            background: rgba(26, 32, 44, 0.75); 
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(74, 85, 104, 0.5); 
+            padding: 15px; margin-bottom: 15px; border-radius: 5px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+        }
+
+        @font-face {
+            font-family: 'Sofachrome';
+            src: url('/sofachrome_italic.otf') format('truetype');
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        h2, h3 { 
+            font-family: 'Sofachrome', sans-serif;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+   
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+        } 
+        .btn { 
+            font-family: 'Sofachrome', sans-serif;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 10px !important; 
+            padding: 12px 18px; 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 4px; 
+            color: white !important; 
+            margin-right: 5px; 
+            text-decoration: none; 
+            display: inline-block; 
+            transition: background-color 0.2s, transform 0.1s;
+        }
         
-        .card { background: #f7fafc; padding: 20px; border-radius: 8px; margin-bottom: 40px; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .car-item { background: #ffffff; border: 1px solid #edf2f7; padding: 15px; margin-bottom: 15px; border-radius: 5px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-        
-        .btn { padding: 10px 15px; cursor: pointer; border: none; border-radius: 4px; color: white; margin-right: 5px; text-decoration: none; display: inline-block; font-size: 14px; transition: background-color 0.2s;}
-        .btn-submit { background-color: #2ecc71; font-size: 16px; width: 100%; margin-top: 10px; font-weight: bold; color: #ffffff;}
-        .btn-submit:hover { background-color: #27ae60; }
-        
-        .btn-edit { background-color: #f6ad55; color: #ffffff; font-weight: bold;}
-        .btn-edit:hover { background-color: #ed8936; }
-        
-        .btn-delete { background-color: #fc8181; color: #ffffff; font-weight: bold;}
-        .btn-delete:hover { background-color: #f56565; }
-        
-        .btn-back { background-color: #edf2f7; color: #4a5568; margin-bottom: 20px; }
-        .btn-back:hover { background-color: #e2e8f0; }
+        .btn:active { transform: translateY(2px); }
+
+        .btn-submit { background-color: #567e69; width: 100%; margin-top: 10px; }
+        .btn-submit:hover { background-color: #41604f; }
+        .btn-edit { background-color: #a37d60; }
+        .btn-edit:hover { background-color: #8c6c53; }
+
+        .btn-delete { background-color: #a07171; }
+        .btn-delete:hover { background-color: #865e5e; }
+
+        .btn-back { background-color: #2d3748; color: #cbd5e0 !important; margin-bottom: 20px; }
+        .btn-back:hover { background-color: #364251; }
     </style>
 </head>
 <body>
-    <a href="/" class="btn btn-back">⬅ Go back</a>
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="/background.mp4" type="video/mp4">
+    </video>
 
-    {{#if editingCar}}
-        <a href="/cars" class="btn btn-back">⬅ Скасувати редагування</a>
-        <h2>Редагувати автомобіль: {{editingCar.car_brand}} {{editingCar.car_model}}</h2>
-    {{else}}
-        <h2>Додати новий автомобіль</h2>
-    {{/if}}
-    
-    <div class="card">
-        <form action="{{#if editingCar}}/cars/edit/{{editingCar.id}}{{else}}/cars{{/if}}" method="POST">
-            
-            <div class="form-group">
-                <label for="car_brand">Марка авто (Brand):</label>
-                <input type="text" id="car_brand" name="car_brand" value="{{editingCar.car_brand}}" placeholder="Наприклад: Audi" required>
-            </div>
+ <div class="wrapper">
 
-            <div class="form-group">
-                <label for="car_model">Модель (Model):</label>
-                <input type="text" id="car_model" name="car_model" value="{{editingCar.car_model}}" placeholder="Наприклад: A6" required>
-            </div>
+        <h1 class="main-title">CAR DATABASE MANAGER</h1>
 
-            <div class="form-group">
-                <label for="engine_type">Тип двигуна (Engine Type):</label>
-                <input type="text" id="engine_type" name="engine_type" value="{{editingCar.engine_type}}" placeholder="Наприклад: Бензин 3.0" min="0" required>
-            </div>
+        <a href="/" class="btn btn-back">⬅ Go back</a>
 
-            <div class="form-group">
-                <label for="horsepower">Кінські сили (Horsepower):</label>
-                <input type="number" id="horsepower" name="horsepower" value="{{editingCar.horsepower}}" placeholder="Наприклад: 340" min="0" required>
-            </div>
-
-            <div class="form-group">
-                <label for="weight">Вага, кг (Weight):</label>
-                <input type="number" id="weight" name="weight" value="{{editingCar.weight}}" placeholder="Наприклад: 1800" min="0" required>
-            </div>
-
-            <div class="form-group">
-                <label for="acceleration_0_to_100">Розгін 0-100 км/год (с):</label>
-                <input type="number" step="0.1" id="acceleration_0_to_100" name="acceleration_0_to_100" value="{{editingCar.acceleration_0_to_100}}" placeholder="Наприклад: 5.1" min="0" required>
-
-            <div class="form-group">
-                <label for="price">Ціна, $ (Price):</label>
-                <input type="number" id="price" name="price" value="{{editingCar.price}}" placeholder="Наприклад: 55000" min="0" required>
-            </div>
-
-            <button type="submit" class="btn btn-submit">
-                {{#if editingCar}}Зберегти зміни{{else}}Створити запис{{/if}}
-            </button>
-        </form>
-    </div>
-
-    <hr style="border-top: 2px solid #edf2f7; border-bottom: none;">
-
-    <h2>Список автомобілів в базі</h2>
-    
-    <div id="cars-list">
-        {{#each cars}}
-            <div class="car-item" id="car-{{this.id}}">
-                <h3 style="margin-top: 0; color: #2ecc71;">{{this.car_brand}} {{this.car_model}}</h3>
-                <p>
-                    <strong>Двигун:</strong> {{this.engine_type}} | 
-                    <strong>Потужність:</strong> {{this.horsepower}} к.с. <br>
-                    <strong>Вага:</strong> {{this.weight}} кг | 
-                    <strong>Розгін 0-100:</strong> {{this.acceleration_0_to_100}} с <br>
-                    <strong>Ціна:</strong> ${{this.price}}
-                </p>
-                <p><small style="color: #718096;">Додано: {{this.created_at_date}} о {{this.created_at_time}}</small></p>
-                
-                <a href="/cars/edit/{{this.id}}" class="btn btn-edit">Редагувати</a>
-                <button class="btn btn-delete delete-btn" data-id="{{this.id}}">Видалити</button>
-            </div>
+        {{#if editingCar}}
+            <a href="/cars" class="btn btn-back">⬅ Скасувати редагування</a>
+            <h2 style="background: rgba(26, 32, 44, 0.75); padding: 10px; border-radius: 5px;">Редагувати автомобіль: {{editingCar.car_brand}} {{editingCar.car_model}}</h2>
         {{else}}
-            <p style="color: #718096; font-style: italic;">У базі поки що немає жодного автомобіля. Додайте перший!</p>
-        {{/each}}
+            <h2 style="background: rgba(26, 32, 44, 0.75); padding: 10px; border-radius: 5px;">Додати новий автомобіль</h2>
+        {{/if}}
+
+        <div class="card">
+            <form action="{{#if editingCar}}/cars/edit/{{editingCar.id}}{{else}}/cars{{/if}}" method="POST">
+                
+                <div class="form-group">
+                    <label for="car_brand">Марка авто (Brand):</label>
+                    <input type="text" id="car_brand" name="car_brand" value="{{editingCar.car_brand}}" placeholder="Наприклад: Audi" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="car_model">Модель (Model):</label>
+                    <input type="text" id="car_model" name="car_model" value="{{editingCar.car_model}}" placeholder="Наприклад: A6" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="engine_type">Тип двигуна (Engine Type):</label>
+                    <input type="text" id="engine_type" name="engine_type" value="{{editingCar.engine_type}}" placeholder="Наприклад: Бензин 3.0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="horsepower">Кінські сили (Horsepower):</label>
+                    <input type="number" id="horsepower" name="horsepower" value="{{editingCar.horsepower}}" placeholder="Наприклад: 340" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Вага, кг (Weight):</label>
+                    <input type="number" id="weight" name="weight" value="{{editingCar.weight}}" placeholder="Наприклад: 1800" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="acceleration_0_to_100">Розгін 0-100 км/год (с):</label>
+                    <input type="number" step="0.1" id="acceleration_0_to_100" name="acceleration_0_to_100" value="{{editingCar.acceleration_0_to_100}}" placeholder="Наприклад: 5.1" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Ціна, $ (Price):</label>
+                    <input type="number" id="price" name="price" value="{{editingCar.price}}" placeholder="Наприклад: 55000" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="image_url">Посилання на фото авто (URL):</label>
+                    <input type="url" id="image_url" name="image_url" value="{{editingCar.image_url}}" placeholder="Наприклад: https://picsum.photos/500/300">
+                </div>
+
+                <button type="submit" class="btn btn-submit">
+                    {{#if editingCar}}Зберегти зміни{{else}}Створити запис{{/if}}
+                </button>
+            </form>
+        </div>
+
+        <hr style="border-top: 2px solid rgba(74, 85, 104, 0.8); border-bottom: none;">
+
+        <h2 style="background: rgba(26, 32, 44, 0.75); padding: 10px; border-radius: 5px;">Список автомобілів в базі</h2>
+
+        <div id="cars-list">
+            {{#each cars}}
+                <div class="car-item" id="car-{{this.id}}">
+                    <h3 style="margin-top: 0; color: #ffffff;">{{this.car_brand}} {{this.car_model}}</h3>
+                    
+                    {{#if this.image_url}}
+                        <img src="{{this.image_url}}" alt="Фото {{this.car_brand}}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 5px; margin-bottom: 15px; border: 1px solid #4a5568;">
+                    {{/if}}
+
+                    <p>
+                        <strong>Двигун:</strong> {{this.engine_type}} | 
+                        <strong>Потужність:</strong> {{this.horsepower}} к.с. <br>
+                        <strong>Вага:</strong> {{this.weight}} кг | 
+                        <strong>Розгін 0-100:</strong> {{this.acceleration_0_to_100}} с <br>
+                        <strong>Ціна:</strong> ${{this.price}}
+                    </p>
+                    <p><small style="color: #718096;">Додано: {{this.created_at_date}} о {{this.created_at_time}}</small></p>
+                    
+                    <a href="/cars/edit/{{this.id}}" class="btn btn-edit">Редагувати</a>
+                    <button class="btn btn-delete delete-btn" data-id="{{this.id}}">Видалити</button>
+                </div>
+            {{else}}
+                <p style="color: #cbd5e0; font-style: italic; background: rgba(26, 32, 44, 0.75); padding: 15px; border-radius: 5px;">У базі поки що немає жодного автомобіля. Додайте перший!</p>
+            {{/each}}
+        </div>
+
     </div>
 
     <script>
