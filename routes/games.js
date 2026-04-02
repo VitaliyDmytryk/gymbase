@@ -28,10 +28,17 @@ router.post('/create', async function(req, res, next) {
   const mode = req.body.mode;
   const cost = req.body.cost
 
-
-if (!regexName.test(name) || !regexMode.test(mode) || !regexCost.test(cost)) {
-    return res.status(400).send("Something is wrong :D");
+if(!regexName.test(name)) {
+    return res.status(400).send("Invalid game name you can use only letters, numbers, spaces and -:!._ and it should start with capital letter or number / only english letters");
 }
+
+if(!regexMode.test(mode)) {
+    return res.status(400).send("Invalid game mode you can use only Online, Offline or Both you need to write it exactly like this");
+}
+if(!regexCost.test(cost)) {
+    return res.status(400).send("Invalid game cost you can use only numbers and $ at the end!!! if game is free write 0$");
+}
+
     const query = `
       INSERT INTO games_info (
         game_name,
@@ -65,8 +72,15 @@ router.post('/update/:id', async function(req, res, next) {
   const mode = req.body.mode;
   const cost = req.body.cost
 
-if (!regexName.test(name) || !regexMode.test(mode) || !regexCost.test(cost)) {
-    return res.status(400).send("Something is wrong :D");
+if(!regexName.test(name)) {
+    return res.status(400).send("Invalid game name you can use only letters, numbers, spaces and -:!._ and it should start with capital letter or number / only english letters");
+}
+
+if(!regexMode.test(mode)) {
+    return res.status(400).send("Invalid game mode you can use only Online, Offline or Both you need to write it exactly like this");
+}
+if(!regexCost.test(cost)) {
+    return res.status(400).send("Invalid game cost you can use only numbers and $ at the end!!! if game is free write 0$");
 }
 
     const query = `

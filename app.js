@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 dotenv.config()
+import 'express-async-errors';
 import createError from 'http-errors'
 import express from 'express'
 import path from 'path'
@@ -47,12 +48,20 @@ app.use('/sloniki', slonikiRouter);
 app.use('/cars', carsRouter);
 app.use('/heroes_mlbb', heroesRouter); 
 app.use('/cats', catsRouter); 
-app.use('/dhd', dhdRouter);
 app.use('/heroes', heroessRouter); 
 app.use('/gym2', gymRouter);
 app.use('/dhd', dhdRouter);
 app.use('/street_food', streetFoodRouter);
 app.use('/product', productRouter);
+
+app.use((err, req, res, next) => {
+  console.error('Global error caught:', err.message);
+
+  res.status(500).render('error', { 
+    message: 'Something went wrong',
+    error: process.env.NODE_ENV === 'development' ? err : {} 
+  });
+});
 
 // catch 404 and forward to error handler
 

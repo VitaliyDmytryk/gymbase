@@ -1,8 +1,9 @@
 <style>
 
-input::placeholder {
-  color: #ffffff;
-  opacity: 1;   
+:root {
+    background-color: #121212; 
+    color: #ffffff;           
+    color-scheme: dark; 
 }
 
 .btn-back {
@@ -10,6 +11,7 @@ input::placeholder {
     top: 20px; 
     left: 20px;
     background-color:rgba(255, 0, 0, 0); 
+    border: 2px solid rgb(255, 255, 255);
     border-radius: 20px;
     display:inline-block;
     padding: 10px 20px;
@@ -46,27 +48,24 @@ html, body {
                 <fieldset>
                     <div style="margin-top: 200px;"></div>
                     <label>
-                        <h1>Name</h1>
+                        <h1 style="color:#ffffff">Name</h1>
                         <input
-                                style="background-color:rgba(0, 0, 0, 0.0); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);"
                                 name="name"
-                                placeholder="Enter the name of the game"
+                                placeholder="What is the name of this game?"
                                 autocomplete=""
                         />
                     </label>
                     <label>
-                        <h1 style="margin-top: 20px">Mode</h1>
+                        <h1 style="margin-top: 20px; color:#ffffff">Mode</h1>
                         <input
-                                style="background-color:rgba(0, 0, 0, 0.0); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);"
                                 name="mode"
                                 placeholder="Online/Offline/Both"
                                 autocomplete=""
                         />
                     </label>
                     <label>
-                        <h1 style="margin-top: 20px">Cost</h1>
+                        <h1 style="margin-top: 20px; color:#ffffff">Cost</h1>
                         <input
-                                style="background-color:rgba(0, 0, 0, 0.0); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);"
                                 name="cost"
                                 placeholder="How much is this game cost?"
                                 autocomplete=""
