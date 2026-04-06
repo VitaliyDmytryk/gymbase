@@ -11,7 +11,13 @@
             Character Name
             <input type="text" name="username" placeholder="Character Name" aria-required="true" />
         </label>
-        
+        <label>
+            Password
+            <input type="password" name="password_hash" placeholder="Enter Password" required />
+            {{#if ErrorPassword}}
+                <p style="color:#ff0000">{{ErrorPassword}}</p>
+            {{/if}}
+        </label>
         <label>
             Favorite Season
             <input type="season" name="season" placeholder="Favorite Season" step="1" min="1" max="8" aria-required="true" />

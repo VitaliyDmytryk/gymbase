@@ -33,9 +33,18 @@
                 <td>{{this.character_notes}}</td>
                 <td>{{this.created_at}}</td> 
                 <td>
-                  <button style="background-color: rgb(242, 130, 208); padding: 5px 10px;">
-                      <a style="color:#fff; text-decoration: none;" href="/dhd/delete/{{this.id}}">DELETE</a>
-                  </button>
+                  <button 
+                    style="background-color: rgb(242, 130, 208)">
+                    <a style="color:#ffffff" href="/dhd/delete/{{this.id}}">
+                        DELETE
+                    </a>
+                </button>
+                <button 
+                    style="background-color: rgb(242, 130, 208)">
+                    <a style="color:#ffffff" href="/dhd/update/{{this.id}}">
+                        UPDATE
+                    </a>
+                </button>
               </td>
             </tr>
         {{/each}}

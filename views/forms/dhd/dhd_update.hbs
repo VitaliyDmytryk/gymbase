@@ -1,0 +1,44 @@
+<button  
+    style="background-color: rgb(242, 130, 208)">
+    <a style="color:#ffffff" href="/dhd">
+        GO BACK
+    </a>
+</button>
+
+
+<h1>Update Character</h1>
+
+<form method="POST" action="{{action}}">
+  <fieldset>
+    <h3>Autorization</h3>
+    <label>
+        Username
+        <input name="currentUsername" value="{{housewife.username}}" placeholder="Current username" required />
+    </label>
+    <label>
+        Password
+        <input type="password" name="password" placeholder="Current password" required />
+    </label>
+  </fieldset>
+
+  <fieldset>
+    <h3>New data (fill in only fields that you need to update)</h3>
+        <label>
+            Username
+            <input name="newUsername" value="{{housewife.username}}" placeholder="New username" />
+        </label>
+        <label>
+            Season
+            <input type="number" name="newSeason" value="{{housewife.season}}" placeholder="New Season" />
+        </label>
+        <label>
+            Reason
+            <input name="new_reason" value="{{housewife.reason}}" placeholder="New Reason" />
+        </label>
+        <label>
+            Character Notes
+            <input name="new_notes" value="{{housewife.character_notes}}" placeholder="New Notes" />
+        </label>
+  </fieldset>
+  <button type="submit">SAVE CHANGES</button>
+</form>
