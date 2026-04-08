@@ -122,6 +122,16 @@ createTableQueries.push(`
         is_active BOOLEAN DEFAULT TRUE          
     );
       `);
+    createTableQueries.push(`
+  CREATE TABLE IF NOT EXISTS gotham_villains (
+    id SERIAL PRIMARY KEY,
+    villain_name TEXT NOT NULL,
+    location TEXT,
+    threat_level INTEGER,
+    status TEXT,
+    spotted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+  `);
 createTableQueries.push(`
     CREATE TABLE IF NOT EXISTS cats (
         id SERIAL PRIMARY KEY,

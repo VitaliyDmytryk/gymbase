@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Gotham Villain Registry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --accent: #00c8ff;
+            --accent2: #0077aa;
+            --accent-glow: rgba(0,200,255,0.18);
+            --danger: #ff3b3b;
+            --success: #00e676;
+            --neutral: #607080;
+            --bg: #05080f;
+            --bg2: #080d18;
+            --bg3: #0b1220;
+            --panel: #0d1525;
+            --border: rgba(0,200,255,0.13);
+            --border2: rgba(0,200,255,0.3);
+            --text: #b8d4e8;
+            --text-dim: #3a5060;
+            --text-muted: #506070;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.07) 2px,
+                rgba(0,0,0,0.07) 4px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .page-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 32px 80px;
+        }
+
+        /* ── HEADER ── */
+        .bat-header {
+            padding: 48px 0 36px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 36px;
+            position: relative;
+        }
+
+        .bat-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 260px; height: 1px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .bat-logo {
+            width: 68px; height: 68px;
+            flex-shrink: 0;
+        }
+
+        .bat-logo svg {
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 0 14px rgba(0,200,255,0.55));
+        }
+
+        .bat-header-text h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.4rem, 4vw, 2.5rem);
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .bat-header-text h1 span { color: var(--accent); }
+
+        .bat-header-text p {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .header-status {
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,200,255,0.06);
+            border: 1px solid var(--border2);
+            padding: 7px 16px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .pulse-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.6); }
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.18s ease;
+        }
+
+        .btn-back {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(60,80,100,0.45);
+            margin-bottom: 28px;
+        }
+        .btn-back:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* ── SECTION HEADING ── */
+        h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        h2 .h2-num {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+
+        h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border2), transparent);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 44px 0;
+        }
+
+        /* ── FORM CARD ── */
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 32px 34px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2), transparent);
+        }
+
+        .card::after {
+            content: 'GCPD // SECURE INPUT TERMINAL';
+            position: absolute;
+            bottom: 12px; right: 18px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+        }
+
+        /* ── FORM ── */
+        .form-group { margin-bottom: 20px; }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .form-group label::before {
+            content: '›';
+            color: var(--accent);
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: #d0e8f8;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.88rem;
+            letter-spacing: 1px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-dim);
+            font-size: 0.78rem;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2300c8ff'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        .form-group select option { background: #0d1525; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        @media (max-width: 580px) { .form-row { grid-template-columns: 1fr; } }
+
+        .btn-submit {
+            width: 100%;
+            margin-top: 10px;
+            padding: 15px 24px;
+            background: var(--accent);
+            color: var(--bg);
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 4px;
+            cursor: pointer;
+            border: none;
+            text-transform: uppercase;
+            transition: all 0.18s ease;
+        }
+        .btn-submit:hover {
+            background: #44dcff;
+            box-shadow: 0 0 28px rgba(0,200,255,0.35);
+        }
+        .btn-submit:active { transform: scale(0.99); }
+
+        /* ── VILLAIN LIST ── */
+        #villains-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .villain-item {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 3px 1fr auto;
+            transition: border-color 0.2s;
+        }
+
+        .villain-item:hover { border-color: var(--border2); }
+
+        .villain-stripe {
+            background: var(--accent2);
+            transition: background 0.2s;
+        }
+        .villain-item:hover .villain-stripe { background: var(--accent); }
+
+        .villain-body { padding: 20px 24px; }
+
+        .villain-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .villain-item h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .villain-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 20px;
+            margin-bottom: 12px;
+        }
+
+        .meta-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .meta-tag .ico { color: var(--accent); }
+
+        .threat-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .threat-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .threat-track {
+            flex: 1;
+            max-width: 150px;
+            height: 3px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .threat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent2), var(--accent));
+        }
+
+        .threat-val {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent);
+            min-width: 28px;
+        }
+
+        .villain-time {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid;
+            white-space: nowrap;
+        }
+
+        .status-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+        .status-active    { color: var(--danger);  border-color: rgba(255,59,59,0.3);  background: rgba(255,59,59,0.07); }
+        .status-active    .status-dot { background: var(--danger); animation: pulse 1.4s infinite; }
+        .status-captured  { color: var(--success); border-color: rgba(0,230,118,0.3);  background: rgba(0,230,118,0.06); }
+        .status-captured  .status-dot { background: var(--success); }
+        .status-neutralized { color: var(--neutral); border-color: rgba(96,112,128,0.3); background: rgba(96,112,128,0.06); }
+        .status-neutralized .status-dot { background: var(--neutral); }
+
+        .villain-actions {
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--border);
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 0 20px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.66rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.15s;
+            white-space: nowrap;
+            min-width: 88px;
+        }
+
+        .btn-action + .btn-action { border-top: 1px solid var(--border); }
+
+        .btn-edit   { color: var(--accent); }
+        .btn-edit:hover   { background: rgba(0,200,255,0.08); }
+        .btn-delete { color: var(--danger); }
+        .btn-delete:hover { background: rgba(255,59,59,0.08); }
+
+        .empty-msg {
+            border: 1px solid var(--border);
+            padding: 44px;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 540px) {
+            .page-wrapper { padding: 0 16px 60px; }
+            .villain-item { grid-template-columns: 3px 1fr; }
+            .villain-actions { flex-direction: row; grid-column: 1 / -1; border-left: none; border-top: 1px solid var(--border); }
+            .btn-action + .btn-action { border-top: none; border-left: 1px solid var(--border); }
+            .bat-header { flex-wrap: wrap; gap: 16px; }
+            .header-status { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <header class="bat-header">
+        <div class="bat-logo">
+            <svg viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40 10 C29 10 17 5 8 1 C10 13 14 19 21 23 C14 23 8 27 4 35 C10 33 16 33 20 35 C16 41 18 49 20 53 C26 45 32 41 40 41 C48 41 54 45 60 53 C62 49 64 41 60 35 C64 33 70 33 76 35 C72 27 66 23 59 23 C66 19 70 13 72 1 C63 5 51 10 40 10Z" fill="#00c8ff"/>
+            </svg>
+        </div>
+        <div class="bat-header-text">
+            <h1>GOTHAM <span>VILLAIN</span> REGISTRY</h1>
+            <p>Gotham City Police Department — Classified Intelligence System</p>
+        </div>
+        <div class="header-status">
+            <div class="status-pill">
+                <span class="pulse-dot"></span>
+                System Online
+            </div>
+        </div>
+    </header>
+
+    <a href="/" class="btn btn-back">← Back</a>
+
+    {{#if editingVillain}}
+        <a href="/villains" class="btn btn-back">✕ Скасувати редагування</a>
+        <h2><span class="h2-num">02</span> Оновити досьє: {{editingVillain.villain_name}}</h2>
+    {{else}}
+        <h2><span class="h2-num">01</span> Внести нового ворога</h2>
+    {{/if}}
+
+    <div class="card">
+        <form action="{{#if editingVillain}}/villains/edit/{{editingVillain.id}}{{else}}/villains{{/if}}" method="POST">
+
+            <div class="form-group">
+                <label for="villain_name">Ім'я / Псевдонім</label>
+                <input type="text" id="villain_name" name="villain_name" value="{{editingVillain.villain_name}}" placeholder="Joker, Bane, Scarecrow..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Локація в Готемі</label>
+                <input type="text" id="location" name="location" value="{{editingVillain.location}}" placeholder="Arkham Asylum, The Narrows, Downtown..." required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="threat_level">Рівень небезпеки</label>
+                    <input type="number" id="threat_level" name="threat_level" value="{{editingVillain.threat_level}}" placeholder="0 – 100" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Статус</label>
+                    <select id="status" name="status">
+                        <option value="active"      {{#if (eq editingVillain.status 'active')}}selected{{/if}}>🔴 Active — на волі</option>
+                        <option value="captured"    {{#if (eq editingVillain.status 'captured')}}selected{{/if}}>🟢 Captured — в Аркемі</option>
+                        <option value="neutralized" {{#if (eq editingVillain.status 'neutralized')}}selected{{/if}}>⚫ Neutralized — загроза усунена</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                {{#if editingVillain}}// Оновити досьє{{else}}// Внести в реєстр{{/if}}
+            </button>
+        </form>
+    </div>
+
+    <hr>
+
+    <h2><span class="h2-num">02</span> Реєстр ворогів Готема</h2>
+
+    <div id="villains-list">
+        {{#each villains}}
+            <div class="villain-item" id="villain-{{this.id}}">
+                <div class="villain-stripe"></div>
+                <div class="villain-body">
+                    <div class="villain-top">
+                        <h3>{{this.villain_name}}</h3>
+                        <span>
+                            {{#if (eq this.status 'active')}}
+                                <span class="status-badge status-active"><span class="status-dot"></span>На волі</span>
+                            {{/if}}
+                            {{#if (eq this.status 'captured')}}
+                                <span class="status-badge status-captured"><span class="status-dot"></span>В Аркемі</span>
+                            {{/if}}
+                            {{#if (eq this.status 'neutralized')}}
+                                <span class="status-badge status-neutralized"><span class="status-dot"></span>Нейтралізований</span>
+                            {{/if}}
+                        </span>
+                    </div>
+                    <div class="villain-meta-row">
+                        <span class="meta-tag"><span class="ico">◈</span> {{this.location}}</span>
+                    </div>
+                    <div class="threat-row">
+                        <span class="threat-label">Threat</span>
+                        <div class="threat-track">
+                            <div class="threat-fill" style="width: {{this.threat_level}}%"></div>
+                        </div>
+                        <span class="threat-val">{{this.threat_level}}</span>
+                    </div>
+                    <div class="villain-time">REC // {{this.spotted_date}} @ {{this.spotted_time}}</div>
+                </div>
+                <div class="villain-actions">
+                    <a href="/villains/edit/{{this.id}}" class="btn-action btn-edit">✎ Edit</a>
+                    <button class="btn-action btn-delete delete-btn" data-id="{{this.id}}">✕ Delete</button>
+                </div>
+            </div>
+        {{else}}
+            <div class="empty-msg">Реєстр порожній — Готем тимчасово в безпеці</div>
+        {{/each}}
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            const id = e.target.getAttribute('data-id');
+            if (confirm('Видалити ворога з реєстру GCPD назавжди?')) {
+                try {
+                    const res = await fetch(`/villains/${id}`, { method: 'DELETE' });
+                    if (res.ok) {
+                        document.getElementById(`villain-${id}`).remove();
+                    } else {
+                        alert('Помилка при видаленні. Альфред вже перевіряє.');
+                    }
+                } catch (err) {
+                    console.error('Бетмен: щось пішло не так:', err);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
