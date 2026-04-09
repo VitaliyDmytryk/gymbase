@@ -1,54 +1,111 @@
 <style>
-    .body{
-        background-image:  #000000;
-       background: #000000;
-background: radial-gradient(circle, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 38%, rgb(0, 0, 0) 100%);
-        height:auto; 
+    body {
+        background: #000000;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 0%, rgba(158, 68, 68, 1) 23%, rgba(255, 0, 0, 1) 50%, rgba(184, 73, 73, 1) 76%, rgba(0, 0, 0, 1) 100%);
+        height: 100vh;
     }
-      table td, table th {
-    background-color: rgb(10, 10, 10);
-    color: white;
-    padding: 10px 10px; 
-    border: 1px solid #ffffff; 
+
+    .naming {
+        background: 50;
+        background: rgba(56, 52, 52, 0.887);
+        border-radius: ;
+        color: white;
+        text-align: center;
+        border: 1x solid #ffffff;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-weight: 200;
+    }
+
+    .edit_button {
+        background-color: rgb(32, 32, 32);
+        width: 7vw;
+        border: #2e2e2e;
+    }
+
+
+    .tablica {
+        top: 5vh;
+        position: relative;
+    }
+
+    .action_buttons {
+        color: #ff0000;
+        style="text-decoration: none;
+
+
+    }
+
+    .del_button {
+        background-color: rgb(32, 32, 32);
+        width: 7vw;
+        border: #2e2e2e;
+    }
+
+    .back_button {
+        background-color: rgb(32, 32, 32);
+        width: auto;
+        border: #2e2e2e;
+    }
+
+    .add_button {
+        background-color: rgb(32, 32, 32);
+        width: auto;
+        border: #2e2e2e;
     }
 </style>
-     <button 
-    style="background-color: rgb(0, 0, 0)">
-    <a style="color:#ff0000" href="/">
+
+<button class="back_button">
+    <a class="action_buttons" style="font-family: Georgia, 'Times New Roman', Times, serif;  text-decoration: none;"
+        href="/">
         GO BACK
     </a>
 </button>
-  <button 
-    style="background-color: rgb(0, 0, 0)">
-    <a style="color:#ff0000" href="/heroes_mlbb/add">
+<button class="add_button">
+    <a class="action_buttons" style="font-family: Georgia, 'Times New Roman', Times, serif;  text-decoration: none;"
+        href="/heroes_mlbb/add">
         ADD HERO
     </a>
 </button>
-<body class="body"></body>
-<table>
+
+
+<body></body>
+<table class="tablica">
     <thead>
-    <tr>
-       <th scope="col">ID</th>
-        <th scope="col">Ім'я</th>
-        <th scope="col">Клас</th>
-        <th scope="col">Роль</th>
-        <th scope="col">Тип атаки</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-    </tr>
+        <tr>
+            <th scope="col" class="naming" style="border-radius: 12px 0px 0px 0px;">ID</th>
+            <th scope="col" class="naming">Ім'я</th>
+            <th scope="col" class="naming">Клас</th>
+            <th scope="col" class="naming">Роль</th>
+            <th scope="col" class="naming">Тип атаки</th>
+            <th scope="col" class="naming"></th>
+            <th scope="col" class="naming" style="border-radius: 0px 12px 0px 0px;"></th>
+        </tr>
     </thead>
     <tbody>
-{{#each heroes}}
+        {{#each heroes}}
         <tr>
-            <td>{{this.id}}</td>
-            <td>{{this.name}}</td>       
-            <td>{{this.hero_class}}</td> 
-            <td>{{this.role}}</td>       
-            <td>{{this.attack_type}}</td>
+            <td class="naming">{{this.id}}</td>
+            <td class="naming">{{this.name}}</td>
+            <td class="naming">{{this.hero_class}}</td>
+            <td class="naming">{{this.role}}</td>
+            <td class="naming">{{this.attack_type}}</td>
 
-            <td><a href="/heroes_mlbb/edit/{{this.id}}" class="btn-edit">Edit</a></td>
-            <td><a href="/heroes_mlbb/delete/{{this.id}}" class="btn-delete" onclick="return confirm('Видалити {{this.name}}?')">Delete</a></td>
-            
+            <td class="naming" style="width: 10vw;">
+                <button class="edit_button">
+                    <a class="action_buttons"
+                        style="font-family: Georgia, 'Times New Roman', Times, serif;  text-decoration: none;"
+                        href="/heroes_mlbb/edit/{{this.id}}">Edit</a>
+                </button>
+            </td>
+            <td class="naming" style="width: 10vw;">
+                <button class="del_button">
+                    <a class="action_buttons"
+                        style="font-family: Georgia, 'Times New Roman', Times, serif;  text-decoration: none;"
+                        href="/heroes_mlbb/delete/{{this.id}}" class="btn-delete"
+                        onclick="return confirm('Видалити {{this.name}}?')">Delete</a>
+            </td>
+            </button>
+
         </tr>
         {{else}}
         <tr>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{#if isEdit}}Edit Hero{{else}}Add Hero{{/if}}</title>
+  <style>
+    html, body {
+     background-image: url('/images/moon-back.png'); 
+    background-size: cover;          
+    background-position: center;    
+    background-attachment: fixed;
+      min-height: 100vh;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #F2F2F7;
+    box-sizing: border-box;
+    padding: 50px 20px 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    }
+    
+ .container {
+      background-color: #1C1C1E; 
+      border-radius: 16px;
+      padding: 20px;
+      width: 100%;
+      max-width: 1000px;
+      box-sizing: border-box;
+      
+      box-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.2),   
+        0 0 15px rgba(255, 255, 255, 0.4),    
+        0 0 30px rgba(255, 255, 255, 0.2),    
+        0 0 60px rgba(255, 255, 255, 0.1);    
+      
+      position: relative; 
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #FFFFFF;
+      border-bottom: 1px solid #3A3A3C;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+   
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #8E8E93;
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px; 
+      background-color: #2C2C2E; 
+      color: #FFFFFF;
+      box-sizing: border-box;
+      font-size: 16px; 
+      transition: box-shadow 0.2s ease, background-color 0.2s;
+    }
+
+    input[type="text"]::placeholder {
+      color: #636366;
+    }
+
+  
+    input[type="text"]:focus {
+      outline: none;
+      background-color: #3A3A3C;
+      box-shadow: 0 0 0 2px #0A84FF; 
+    }
+
+    .btn-submit {
+      background-color: #0A84FF; 
+      color: white;
+      padding: 14px 15px;
+      border: none;
+      border-radius: 120px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 16px;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s;
+    }
+
+  
+    .btn-submit:hover {
+      transform: scale(1.05); 
+      filter: brightness(1.1); 
+      box-shadow: 0 0 15px rgba(10, 132, 255, 0.6); 
+    }
+
+ 
+    .cancel-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #0A84FF;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: filter 0.2s;
+    }
+
+    .cancel-link:hover {
+      filter: brightness(1.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>{{#if isEdit}}Edit Hero: {{hero.name}}{{else}}Add New Hero{{/if}}</h2>
+
+    <form action="{{#if isEdit}}/heroes/edit/{{hero.id}}{{else}}/heroes/add{{/if}}" method="POST">
+      
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="hero_name" value="{{hero.name}}" required placeholder="Впишіть ім'я героя">
+      </div>
+
+      <div class="form-group">
+        <label>Hero class</label>
+        <input type="text" name="hero_class" value="{{hero.primary_attribute}}" required placeholder="Студент, викладач, робочий">
+      </div>
+
+      <div class="form-group">
+        <label>Role</label>
+        <input type="text" name="hero_role" value="{{hero.role}}" required placeholder="Підтримка, носій">
+      </div>
+
+      <div class="form-group">
+        <label>Attack</label>
+        <input type="text" name="attack_type" value="{{hero.attack_type}}" required placeholder="Моральний, фізичний">
+      </div>
+
+      <button type="submit" class="btn-submit">
+        {{#if isEdit}}Save Changes{{else}}Add Hero{{/if}}
+      </button>
+      
+      <a href="/heroes" class="cancel-link">Cancel and Go Back</a>
+    </form>
+  </div>
+
+</body>
+</html>
