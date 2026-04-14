@@ -42,6 +42,8 @@ createTableQueries.push(`
     name TEXT NOT NULL,
     price INT,
     quantity INT
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
     );
   `);
 
