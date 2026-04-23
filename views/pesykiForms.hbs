@@ -1,6 +1,11 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: sans-serif; background: #f7f4f0; color: #3d2e1e; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cellipse cx='12' cy='6' rx='3' ry='4' fill='%23a0856b'/%3E%3Cellipse cx='20' cy='6' rx='3' ry='4' fill='%23a0856b'/%3E%3Cellipse cx='7' cy='11' rx='2.5' ry='3.5' fill='%23a0856b'/%3E%3Cellipse cx='25' cy='11' rx='2.5' ry='3.5' fill='%23a0856b'/%3E%3Cellipse cx='16' cy='20' rx='8' ry='9' fill='%23a0856b'/%3E%3C/svg%3E") 16 16, auto; }
+  body { background: #f7f4f0!important; color-scheme: light!important; }
+[data-theme="dark"], :root { --background-color: #f7f4f0!important; color-scheme: light!important; }
+ body { font-family: sans-serif; background: #f7f4f0!important; color: #3d2e1e!important; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cellipse cx='12' cy='6' rx='3' ry='4' fill='%23a0856b'/%3E%3Cellipse cx='20' cy='6' rx='3' ry='4' fill='%23a0856b'/%3E%3Cellipse cx='7' cy='11' rx='2.5' ry='3.5' fill='%23a0856b'/%3E%3Cellipse cx='25' cy='11' rx='2.5' ry='3.5' fill='%23a0856b'/%3E%3Cellipse cx='16' cy='20' rx='8' ry='9' fill='%23a0856b'/%3E%3C/svg%3E") 16 16, auto; }
+ main.container { max-width: 100%!important; padding: 0!important; background: #f7f4f0!important; }
+  .panel.active { display: block!important; }
+  .form-box { display: block!important; visibility: visible!important; }
   .wrap { max-width: 520px; margin: 2rem auto; padding: 0 1rem; }
   .back { display: inline-block; margin-bottom: 1.2rem; color: #8b6f52; text-decoration: none; font-size: 0.9rem; }
   .back:hover { text-decoration: underline; }
@@ -30,12 +35,12 @@
   <a class="back" href="/pesyki">← Назад до списку</a>
 
   <div class="tabs">
-    <a class="tab-btn {{#eq tab 'create'}}active{{/eq}}" href="/pesyki/forms?tab=create">🐾 Додати</a>
-    <a class="tab-btn {{#eq tab 'update'}}active{{/eq}}" href="/pesyki/forms?tab=update">✏️ Оновити</a>
-    <a class="tab-btn {{#eq tab 'delete'}}active{{/eq}}" href="/pesyki/forms?tab=delete">🗑 Видалити</a>
+    <a class="tab-btn {{#eq tab 'create'}}active{{/eq}}" href="/pesyki/forms?tab=create" data-tab="create">🐾 Додати</a>
+    <a class="tab-btn {{#eq tab 'update'}}active{{/eq}}" href="/pesyki/forms?tab=update" data-tab="update">✏️ Оновити</a>
+    <a class="tab-btn {{#eq tab 'delete'}}active{{/eq}}" href="/pesyki/forms?tab=delete" data-tab="delete">🗑 Видалити</a>
   </div>
 
-  <div class="panel {{#eq tab 'create'}}active{{/eq}}">
+  <div class="panel {{#eq tab 'create'}}active{{/eq}}" data-tab="create">
     <div class="form-box">
       <h2>🐾 Додати нового песика</h2>
       <p class="sub">Заповни інформацію про тваринку</p>
@@ -75,7 +80,7 @@
     </div>
   </div>
 
-  <div class="panel {{#eq tab 'update'}}active{{/eq}}">
+  <div class="panel {{#eq tab 'update'}}active{{/eq}}" data-tab="update">
     <div class="form-box">
       <h2>✏️ Оновити дані песика</h2>
       <p class="sub">Обери песика зі списку та введи нові дані</p>
@@ -106,7 +111,7 @@
     </div>
   </div>
 
-  <div class="panel {{#eq tab 'delete'}}active{{/eq}}">
+  <div class="panel {{#eq tab 'delete'}}active{{/eq}}" data-tab="delete">
     <div class="form-box">
       <h2>🗑 Видалити песика</h2>
       <p class="sub">Обери песика якого хочеш видалити зі списку</p>

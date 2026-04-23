@@ -90,16 +90,32 @@
           </select>
         </div>
         {{#if errorUpdate}}<div class="error" style="margin-bottom:1rem">{{errorUpdate}}</div>{{/if}}
-        <div class="field"><label>Нове імʼя</label><input type="text" name="name" placeholder="Барсик" required /></div>
-        <div class="field"><label>Нова порода</label><input type="text" name="breed" placeholder="Лабрадор" required /></div>
-        <div class="field"><label>Новий вік</label><input type="number" name="age" min="0" max="30" placeholder="3" required /></div>
+        <div class="field">
+          <label>Нове імʼя</label>
+          <input type="text" name="name" placeholder="Барсик" required />
+          {{#if errorName}}<div class="error">{{errorName}}</div>{{/if}}
+        </div>
+        <div class="field">
+          <label>Нова порода</label>
+          <input type="text" name="breed" placeholder="Лабрадор" required />
+          {{#if errorBreed}}<div class="error">{{errorBreed}}</div>{{/if}}
+        </div>
+        <div class="field">
+          <label>Новий вік</label>
+          <input type="number" name="age" min="0" max="30" placeholder="3" required />
+          {{#if errorAge}}<div class="error">{{errorAge}}</div>{{/if}}
+        </div>
         <div class="field">
           <div class="check-row">
             <input type="checkbox" name="vaccinated" id="vacc_u" />
             <label for="vacc_u" style="margin:0">Щеплений</label>
           </div>
         </div>
-        <div class="field"><label>Новий притулок</label><input type="text" name="shelter" placeholder="Притулок №1" required /></div>
+        <div class="field">
+          <label>Новий притулок</label>
+          <input type="text" name="shelter" placeholder="Притулок №1" required />
+          {{#if errorShelter}}<div class="error">{{errorShelter}}</div>{{/if}}
+        </div>
         <div class="field"><label>Нове фото (посилання)</label><input type="url" name="photo" placeholder="https://..." /></div>
         <button class="btn btn-add" type="submit">Оновити ✏️</button>
       </form>
