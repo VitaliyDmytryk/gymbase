@@ -69,6 +69,7 @@ app.use('/bar', barRouter);
 app.use('/accounts', accountsRouter);
 app.use('/spotify', spotifyRouter);
 app.use('/notabug', notabugRouter);
+app.use('/president',presidentRouter);
 
 app.use((err, req, res, next) => {
   console.error('Global error caught:', err || 'Unknown error');

@@ -1,0 +1,35 @@
+<button style="background-color: rgb(47, 1, 252)">
+    <a style="color:#ffffff; text-decoration: none;" href="/president">
+        GO BACK
+    </a>
+</button>
+
+<form method="POST" action="{{action}}">
+    <fieldset>
+        <label>
+            Name
+            <input  
+            name="name"
+            placeholder="name president" required />
+        </label>
+        
+        <label>
+            Age
+            <input type="number" 
+                   name="age" 
+                   placeholder="age yours president" required />
+        </label>
+        
+        <label>
+            Country
+            <input
+             name="country" 
+             placeholder="Your banana republic" required />
+        </label>
+        
+    </fieldset>
+
+    <input 
+    type="submit"
+     value="SAVE" />
+</form>

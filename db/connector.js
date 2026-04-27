@@ -235,6 +235,16 @@ createTableQueries.push(`
     );
 `);
 
+createTableQueries.push ( `
+    CREATE TABLE IF NOT EXISTS president (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    age INT,
+    country TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+   `);
+
 for await (const query of createTableQueries) {
     try {
         console.log(query.slice(0, query.indexOf('(')).trim() + "...")
