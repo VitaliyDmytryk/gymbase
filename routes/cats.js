@@ -3,24 +3,133 @@ import bcrypt from "bcrypt";
 const router = express.Router();
 import db from "../db/connector.js";
 
-const validateEmail = (email) => {
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!email || email.trim().length === 0) return "Email is required";
-  if (!re.test(email)) return "Invalid format (example: cat@mail.com)";
-  if (email.length > 255) return "Email is too long";
-  if (email.length < 4) return "Email is too short";
-  return null;
+// ---------------------------------------
+// клас CatData -- все що стосується кота
+// ---------------------------------------
+class CatData {
+  /*
+  constructor(data) {
+    this.name = data.name || "Unknown";
+    this.breed = data.breed || "UNknown";
+    this.age = parseInt(data.age_years, 10);
+    this.weight = parseFloat(data.weight_kg);
+    this.favorite_food = data.favorite_food;
+    this.hasMicrochip = data.has_microchip;
+    this.ownerContact = data.owner_contact;
+    this.characterNotes = data.character_notes;
+    this.username = data.owner_name || "Unknown Owner";
+    this.createdAt = data.created_at
+      ? new Date(data.created_at).toLocaleString('uk-UA') 
+      : "Unknown";
+    this.email = data.email;
+    this.password = data.password;
+  }
+    */
+  constructor({
+    id,
+    name,
+    breed,
+    age_years,
+    weight_kg,
+    favorite_food,
+    has_microchip,
+    owner_contact,
+    character_notes,
+    owner_name,
+    created_at,
+    email,
+    password,
+  }) {
+    this.id = id;
+    this.name = name || "Unknown";
+    this.breed = breed || "Unknown";
+    this.age = parseInt(age_years, 10) || 0;
+    this.weight = parseFloat(weight_kg) || 0;
+    this.favorite_food = favorite_food;
+    this.hasMicrochip = has_microchip;
+    this.ownerContact = owner_contact;
+    this.characterNotes = character_notes;
+    this.username = owner_name || "Unknown Owner";
+    this.email = email;
+    this.password = password;
+    this.createdAt = created_at
+      ? new Date(created_at).toLocaleString("uk-UA")
+      : "Unknown";
+  }
+
+  display() {
+    console.log(`\n--- [CAT: ${this.name.toUpperCase()}] ---`);
+    console.table({
+      "Id": this.id,
+      "Breed": this.breed,
+      "Age": `${this.age} years`,
+      "Weight": `${this.weight} kg`,
+      "Favorite Food": this.favorite_food,
+      "Microchip": this.hasMicrochip ? "Yes" : "No",
+      "Owner": this.username,
+      "Email": this.email,
+      "Contact": this.ownerContact,
+    });
+    console.log("Created at:", this.createdAt);
+    console.log("Notes:", this.characterNotes || "No notes provided.");
+    console.log("-----------------------");
+  }
+}
+
+const showExistingCats = async () => {
+  try {
+    const result = await db.query(`
+      SELECT cats.*, users_cats.username as owner_name,
+      users_cats.email, 
+      users_cats.password
+      FROM cats
+      LEFT JOIN users_cats ON cats.user_id = users_cats.id
+      `);
+
+    if (result.rows.length === 0) {
+      console.log("\n[CAT NET] The database is empty. There are no cats yet.");
+    } else {
+      console.log(
+        `\n[CAT NET] Found cats in the database: ${result.rows.length}`,
+      );
+      result.rows.forEach((row) => {
+        const cat = new CatData(row);
+        cat.display();
+      });
+    }
+  } catch (err) {
+    console.error(
+      "\n[ERROR] Failed to output data to the console:",
+      err.message,
+    );
+  }
 };
 
-const validatePassword = (pass) => {
-  if (!pass || pass.length < 8) return "Password must be at least 8 characters";
-  if (!/[A-Z]/.test(pass))
-    return "Password must contain at least one uppercase letter";
-  if (!/[0-9]/.test(pass)) return "Password must contain at least one number";
-  return null;
-};
+showExistingCats();
 
-const validateUsername = (name) => {
+// ----------------------------------------
+// клас CatValidator -- валідація всього
+// ----------------------------------------
+class CatValidator {
+  static validateEmail(email) {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!email || email.trim().length === 0) return "Email is required";
+    if (!re.test(email)) return "Invalid format (example: cat@mail.com)";
+    if (email.length > 255) return "Email is too long";
+    if (email.length < 4) return "Email is too short";
+    return null;
+  }
+
+  static validatePassword(pass) {
+    if (!pass || pass.length < 8)
+      return "Password must be at least 8 characters";
+    if (!/[A-Z]/.test(pass))
+      return "Password must contain at least one uppercase letter";
+    if (!/[0-9]/.test(pass)) return "Password must contain at least one number";
+    return null;
+  }
+
+  static  validateUsername(name) {
   const n = name.trim();
   if (n.length < 3 || n.length > 30) return "Username must be 3-30 characters";
   if (!/^[a-zA-Z0-9_-]+$/.test(n))
@@ -28,59 +137,80 @@ const validateUsername = (name) => {
   return null;
 };
 
-const validateAge = (age) => {
-  const n = parseInt(age, 10);
-  if (age === "" || age === null || age === undefined) return "Age is required";
-  if (isNaN(n)) return "Age must be a valid number";
-  if (n < 0 || n > 20) return "Age must be between 0 and 20 years old";
-  return null;
-};
-
-const validateWeight = (weight) => {
-  const w = parseFloat(weight);
-  if (weight === "" || weight === null) return "Weight is required";
-  if (isNaN(w)) return "Weight must be a number";
-  if (w <= 0 || w > 25) return "Weight must be between 0.1 and 25 kg";
-  return null;
-};
-
-const validateCatName = (name) => {
-  if (!name || typeof name !== "string") return "Cat name is required";
-  const trimmed = name.trim();
-  if (trimmed.length < 1) return "Cat name is required";
-  if (trimmed.length > 50) return "Cat name is too long (max 50 characters)";
-  if (!/^[a-zA-Zа-яА-ЯіІїЇєЄґҐ0-9\s-]+$/.test(trimmed)) {
-    return "Cat name contains invalid characters";
+  static validateCatName(name) {
+    if (!name || typeof name !== "string") return "Cat name is required";
+    const trimmed = name.trim();
+    if (trimmed.length < 3) return "Cat name must be at least 3 characters";
+    if (trimmed.length > 50) return "Cat name is too long (max 50 characters)";
+    if (!/^[a-zA-Zа-яА-ЯіІїЇєЄґҐ0-9\s-]+$/.test(trimmed)) {
+      return "Name contains invalid characters";
+    }
+    return null;
   }
-  return null;
-};
 
-const validateBreed = (breed) => {
-  if (!breed || typeof breed !== "string") return "Breed is required";
-  const trimmed = breed.trim();
-  if (trimmed.length < 2) return "Breed must be at least 2 characters";
-  if (trimmed.length > 50) return "Breed name is too long";
-  if (!/^[a-zA-Zа-яА-ЯіІїЇєЄґҐ\s-]+$/.test(trimmed)) {
-    return "Breed contains invalid characters";
+  
+  static validateAge(age) {
+    const n = parseInt(age, 10);
+    if (age === "" || age === null || age === undefined)
+      return "Age is required";
+    if (isNaN(n)) return "Age must be a valid number";
+    if (n < 0 || n > 20) return "Age must be between 0 and 20 years old";
+    return null;
   }
-  return null;
-};
 
-const validateContact = (contact) => {
-  if (!contact || typeof contact !== "string")
-    return "Contact information is required";
-  const trimmed = contact.trim();
-  if (trimmed.length < 5) return "Contact must be at least 5 characters";
-  if (trimmed.length > 100) return "Contact is too long (max 100)";
-  if (/[<>]/.test(trimmed)) {
-    return "Contact contains invalid symbols";
+  static validateWeight(weight) {
+    const w = parseFloat(weight);
+    if (weight === "" || weight === null) return "Weight is required";
+    if (isNaN(w)) return "Weight must be a number";
+    if (w <= 0 || w > 25) return "Weight must be between 0.1 and 25 kg";
+    return null;
   }
-  return null;
+
+  static validateBreed(breed) {
+    if (!breed || typeof breed !== "string") return "Breed is required";
+    const trimmed = breed.trim();
+    if (trimmed.length < 2) return "Breed must be at least 2 characters";
+    if (trimmed.length > 50) return "Breed name is too long";
+    if (!/^[a-zA-Zа-яА-ЯіІїЇєЄґҐ\s-]+$/.test(trimmed)) {
+      return "Breed contains invalid characters";
+    }
+    return null;
+  }
+
+  static validateContact(contact) {
+    if (!contact || typeof contact !== "string")
+      return "Contact information is required";
+    const trimmed = contact.trim();
+    if (trimmed.length < 5) return "Contact must be at least 5 characters";
+    if (trimmed.length > 100) return "Contact is too long (max 100)";
+    if (/[<>]/.test(trimmed)) {
+      return "Contact contains invalid symbols";
+    }
+    return null;
+  }
+}
+
+//  Отримвння всіх котів з бази та повертає масив екземплярів CatData
+const allCatsFromDB = async () => {
+  const result = await db.query(`
+    SELECT cats.*, users_cats.username as owner_name, users_cats.email, users_cats.password
+    FROM cats
+    LEFT JOIN users_cats ON cats.user_id = users_cats.id
+    ORDER BY cats.created_at DESC
+    `);
+  return result.rows.map((row) => new CatData(row));
 };
 
+// -------------------------
+// Головна сторінка сайту
+// -------------------------
 router.get("/", function (req, res, next) {
   res.render("cats/cats", { title: "CAT NET." });
 });
+
+// ---------------
+// АВТОРИЗАЦІЯ
+// ---------------
 
 router.get("/register", async (req, res) => {
   res.render("cats/cats-register-form", {
@@ -91,21 +221,16 @@ router.get("/register", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const username = req.body.username?.trim();
-  const email = req.body.email?.trim();
-  const { password, confirmPassword } = req.body;
+  const { username, email, password, confirmPassword } = req.body;
+  const errors = {
+    username: CatValidator.validateUsername(username),
+    email: CatValidator.validateEmail(email),
+    password: CatValidator.validatePassword(password),
+    confirmPassword:
+      password !== confirmPassword ? " Passwords don't match" : null,
+  };
 
-  const errors = {};
-
-  const uErr = validateUsername(username);
-  const eErr = validateEmail(email);
-  const pErr = validatePassword(password);
-
-  if (uErr) errors.username = uErr;
-  if (eErr) errors.email = eErr;
-  if (pErr) errors.password = pErr;
-  if (password !== confirmPassword)
-    errors.confirmPassword = "Passwords don't match";
+  Object.keys(errors).forEach((key) => !errors[key] && delete errors[key]);
 
   if (Object.keys(errors).length > 0) {
     return res.render("cats/cats-register-form", {
@@ -116,23 +241,11 @@ router.post("/register", async (req, res) => {
   }
 
   try {
-    const userCheck = await db.query(
-      "SELECT * FROM users_cats WHERE email = $1",
-      [email],
-    );
-    if (userCheck.rows.length > 0) {
-      return res.render("cats/cats-register-form", {
-        title: "REGISTER - CAT NET.",
-        errors: { email: "A user with this email is already registered." },
-        formData: req.body,
-      });
-    }
-
     const saltRound = 10;
     const hashedPassword = await bcrypt.hash(password, saltRound);
     await db.query(
       "INSERT INTO users_cats (username, email, password) VALUES ($1, $2, $3)",
-      [username, email, hashedPassword],
+      [username.trim(), email.trim(), hashedPassword],
     );
     res.redirect("/cats/login");
   } catch (err) {
@@ -151,39 +264,23 @@ router.get("/login", (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const errors = {};
+  const errors = { email: CatValidator.validateEmail(email) };
 
-  const eErr = validateEmail(email);
-  const pErr = validatePassword(password);
-
-  if (eErr) errors.email = eErr;
-  if (pErr) errors.password = pErr;
-
-  if (Object.keys(errors).length > 0) {
+  if (Object.keys(errors).filter((k) => errors[k]).length > 0) {
     return res.render("cats/cats-login-form", {
       title: "Login - CAT NET.",
       errors,
       formData: req.body,
     });
   }
-
   try {
     const result = await db.query("SELECT * FROM users_cats WHERE email = $1", [
       email,
     ]);
     const user = result.rows[0];
-
-    if (user) {
-      const validPassword = await bcrypt.compare(password, user.password);
-      if (validPassword) {
-        return res.redirect(`/cats/profile?user=${user.username}`);
-      } else {
-        errors.password = "Invalid password";
-      }
-    } else {
-      errors.email = "User with this email not found";
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return res.redirect(`/cats/profile?user=${user.username}`);
     }
-
     res.render("cats/cats-login-form", {
       title: "Login - CAT NET.",
       errors,
@@ -194,6 +291,10 @@ router.post("/login", async (req, res) => {
     res.status(500).send("Server error during login");
   }
 });
+
+// ---------------
+// ІНШІ ФУНКЦІЇ
+// ---------------
 
 router.get("/profile", async (req, res) => {
   const name = req.query.user || "Guest";
@@ -208,11 +309,12 @@ router.get("/profile", async (req, res) => {
         "SELECT * FROM cats WHERE user_id =$1 ORDER BY created_at DESC",
         [userId],
       );
+      const catObjects = catsRes.rows.map((row) => new CatData(row));
 
       res.render("cats/cats-profile", {
         title: "MY PROFILE - CAT NET.",
         username: name,
-        cats: catsRes.rows,
+        cats: catObjects,
       });
     } else {
       res.redirect("/cats");
@@ -227,8 +329,12 @@ router.get("/logout", async (req, res) => {
 });
 
 router.get("/add-form", (req, res) => {
-  const username = req.query.user;
-  res.render("cats/cats-add", { username });
+  res.render("cats/cats-add", {
+    username: req.query.user,
+    isEdit: false,
+    cat: {},
+    errors: {},
+  });
 });
 
 router.post("/add", async (req, res) => {
@@ -243,26 +349,24 @@ router.post("/add", async (req, res) => {
     username,
     owner_contact,
   } = req.body;
-  const errors = {};
 
-  const nErr = validateCatName(name);
-  const bErr = validateBreed(breed);
-  const aErr = validateAge(age_years);
-  const wErr = validateWeight(weight_kg);
-  const cErr = validateContact(owner_contact);
+  const errors = {
+    name: CatValidator.validateCatName(name),
+    breed: CatValidator.validateBreed(breed),
+    age_years: CatValidator.validateAge(age_years),
+    weight_kg: CatValidator.validateWeight(weight_kg),
+    owner_contact: CatValidator.validateContact(owner_contact),
+  };
 
-  if (nErr) errors.name = nErr;
-  if (bErr) errors.breed = bErr;
-  if (aErr) errors.age_years = aErr;
-  if (wErr) errors.weight_kg = wErr;
-  if (cErr) errors.owner_contact = cErr;
+  Object.keys(errors).forEach((key) => !errors[key] && delete errors[key]);
 
   if (Object.keys(errors).length > 0) {
+    console.log("Знайдено помилки:", errors);
     return res.render("cats/cats-add", {
       title: "REGISTER NEW CAT",
-      errors,
+      errors: errors,
       cat: req.body,
-      username,
+      username: req.body.username,
       isEdit: false,
     });
   }
@@ -272,8 +376,6 @@ router.post("/add", async (req, res) => {
       "SELECT id FROM users_cats WHERE username = $1",
       [username],
     );
-    const userId = userRes.rows[0].id;
-
     await db.query(
       `INSERT INTO cats (name, breed, age_years, weight_kg, favorite_food, has_microchip, owner_contact, character_notes, user_id)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
@@ -286,10 +388,9 @@ router.post("/add", async (req, res) => {
         has_microchip === "on",
         owner_contact,
         character_notes,
-        userId,
+        userRes.rows[0].id,
       ],
     );
-
     res.redirect(`/cats/profile?user=${username}`);
   } catch (err) {
     res.status(500).send("Failed to save cat data.");
@@ -303,11 +404,9 @@ router.post("/delete", async (req, res) => {
       "SELECT id FROM  users_cats WHERE username = $1",
       [username],
     );
-    const userId = userRes.rows[0].id;
-
     await db.query("DELETE FROM cats WHERE id = $1 AND user_id = $2", [
       cat_id,
-      userId,
+      userRes.rows[0].id,
     ]);
     res.redirect(`/cats/profile?user=${username}`);
   } catch (err) {
@@ -317,24 +416,23 @@ router.post("/delete", async (req, res) => {
 });
 
 router.get("/edit-form/:id", async (req, res) => {
-  const catId = req.params.id;
   const username = req.query.user;
-
   try {
-    const result = await db.query("SELECT * FROM cats WHERE id = $1", [catId]);
+    const result = await db.query("SELECT * FROM cats WHERE id = $1", [
+      req.params.id,
+    ]);
     const cat = result.rows[0];
-
-    if (!cat) {
-      return res.status(404).send("Cat not found");
+    if (cat) {
+      res.render("cats/cats-add", {
+        cat,
+        username,
+        isEdit: true,
+        title: "EDIT CAT - CAT NET.",
+        errors: {},
+      });
+    } else {
+      res.status(404).send("Cat not found");
     }
-
-    res.render("cats/cats-add", {
-      cat,
-      username,
-      isEdit: true,
-      title: "EDIT CAT - CAT NET.",
-      errors: {},
-    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
@@ -356,16 +454,14 @@ router.post("/edit", async (req, res) => {
   } = req.body;
 
   const errors = {
-    name: validateCatName(name),
-    breed: validateBreed(breed),
-    age_years: validateAge(age_years),
-    weight_kg: validateWeight(weight_kg),
-    owner_contact: validateContact(req.body.owner_contact),
+    name: CatValidator.validateCatName(name),
+    breed: CatValidator.validateBreed(breed),
+    age_years: CatValidator.validateAge(age_years),
+    weight_kg: CatValidator.validateWeight(weight_kg),
+    owner_contact: CatValidator.validateContact(owner_contact),
   };
 
-  Object.keys(errors).forEach((key) => {
-    if (errors[key] === null) delete errors[key];
-  });
+  Object.keys(errors).forEach((key) => !errors[key] && delete errors[key]);
 
   if (Object.keys(errors).length > 0) {
     return res.render("cats/cats-add", {
@@ -382,8 +478,6 @@ router.post("/edit", async (req, res) => {
       "SELECT id FROM users_cats WHERE username = $1",
       [username],
     );
-    const userId = userRes.rows[0].id;
-
     await db.query(
       `UPDATE cats SET name=$1, breed=$2, age_years=$3, weight_kg=$4, favorite_food=$5, 
        has_microchip=$6, owner_contact=$7, character_notes=$8 WHERE id=$9 AND user_id=$10`,
@@ -397,10 +491,9 @@ router.post("/edit", async (req, res) => {
         owner_contact,
         character_notes,
         cat_id,
-        userId,
+        userRes.rows[0].id,
       ],
     );
-
     res.redirect(`/cats/profile?user=${encodeURIComponent(username)}`);
   } catch (err) {
     console.error(err.message);
@@ -411,16 +504,10 @@ router.post("/edit", async (req, res) => {
 router.get("/all", async (req, res) => {
   const name = req.query.user || "Guest";
   try {
-    const allCatsRes = await db.query(`
-      SELECT cats.*, users_cats.username as owner_name 
-      FROM cats 
-      JOIN users_cats ON cats.user_id = users_cats.id 
-      ORDER BY cats.created_at DESC
-    `);
-
+    const catObjects = await allCatsFromDB();
     res.render("cats/cats-all", {
       title: "ALL CATS - CAT NET.",
-      cats: allCatsRes.rows,
+      cats: catObjects,
       username: name,
     });
   } catch (err) {
@@ -431,15 +518,10 @@ router.get("/all", async (req, res) => {
 
 router.get("/view-public", async (req, res) => {
   try {
-    const listCats = await db.query(`
-      SELECT cats.*, users_cats.username as owner_name 
-      FROM cats 
-      JOIN users_cats ON cats.user_id = users_cats.id 
-      ORDER BY cats.created_at DESC
-    `);
+    const catsObjects = await allCatsFromDB();
     res.render("cats/cats-public-list", {
       title: "PUBLIC LIST - CAT NET.",
-      cats: listCats.rows,
+      cats: catsObjects,
     });
   } catch (err) {
     console.error(err);

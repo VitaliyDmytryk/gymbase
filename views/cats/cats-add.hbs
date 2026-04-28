@@ -172,16 +172,15 @@
           <span class="error-hint">{{errors.name}}</span>
         {{/if}}
         <input type="text" name="name" placeholder="MEOWTH" 
-          value="{{#if formData.name}}{{formData.name}}{{else}}{{cat.name}}{{/if}}" 
-          class="{{#if errors.name}}invalid-input{{/if}}" required>
+          value="{{#if cat.name}}{{cat.name}}{{else}}{{formData.name}}{{/if}}"
+          class="{{#if errors.name}}invalid-input{{/if}}">
       </div>
       <div class="form-group">
         <label>Breed</label>
         {{#if errors.breed}}
-          <span class="error-hint">{{errors.breed}}</span>
-        {{/if}}
+        <span class="error-hint">{{errors.breed}}</span>{{/if}}
         <input type="text" name="breed" placeholder="MIXED" 
-          value="{{#if formData.breed}}{{formData.breed}}{{else}}{{cat.breed}}{{/if}}"
+          value="{{cat.breed}}"
           class="{{#if errors.breed}}invalid-input{{/if}}">
       </div>
     </div>
@@ -193,7 +192,7 @@
           <span class="error-hint">{{errors.age_years}}</span>
         {{/if}}
         <input type="number" name="age_years" placeholder="0" 
-          value="{{#if formData.age_years}}{{formData.age_years}}{{else}}{{cat.age_years}}{{/if}}"
+          value="{{cat.age_years}}"
           class="{{#if errors.age_years}}invalid-input{{/if}}">
       </div>
       <div class="form-group">
@@ -202,7 +201,7 @@
           <span class="error-hint">{{errors.weight_kg}}</span>
         {{/if}}
         <input type="number" step="0.1" name="weight_kg" placeholder="0.0" 
-          value="{{#if formData.weight_kg}}{{formData.weight_kg}}{{else}}{{cat.weight_kg}}{{/if}}"
+          value="{{cat.weight_kg}}"
           class="{{#if errors.weight_kg}}invalid-input{{/if}}">
       </div>
     </div>
@@ -210,8 +209,7 @@
     <div class="row">
       <div class="form-group">
         <label>Favorite Food</label>
-        <input type="text" name="favorite_food" placeholder="TUNA" 
-          value="{{#if formData.favorite_food}}{{formData.favorite_food}}{{else}}{{cat.favorite_food}}{{/if}}">
+        <input type="text" name="favorite_food" placeholder="TUNA" value="{{cat.favorite_food}}">
       </div>
       <div class="form-group">
         <label>Owner Contact</label>
@@ -231,8 +229,8 @@
 
     <div class="form-group">
       <label>Character Notes</label>
-      <textarea name="character_notes" rows="2" placeholder="NOTES...">{{#if formData.character_notes}}{{formData.character_notes}}{{else}}{{cat.character_notes}}{{/if}}</textarea>
-    </div>
+      <textarea name="character_notes" rows="2" placeholder="NOTES...">{{cat.character_notes}}</textarea>    
+      </div>
 
     <button type="submit" class="btn-submit">
       {{#if isEdit}}Save Changes{{else}}Add to Database{{/if}}

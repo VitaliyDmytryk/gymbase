@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>База Кошенят</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <a href="/">← Назад на головну</a>
+    <h1>Управління базою кошенят</h1>
+
+    <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc;">
+        {{#if editingKitten}}
+            <h2>Редагувати кошеня: {{editingKitten.name}}</h2>
+            <form action="/kittens/edit/{{editingKitten.id}}" method="POST">
+        {{else}}
+            <h2>Додати нового кошеня</h2>
+            <form action="/kittens" method="POST">
+        {{/if}}
+            
+            <label>Ім'я:</label>
+            <input type="text" name="name" value="{{editingKitten.name}}" required>
+            
+            <label>Порода:</label>
+            <input type="text" name="breed" value="{{editingKitten.breed}}">
+            
+            <label>Колір:</label>
+            <input type="text" name="color" value="{{editingKitten.color}}">
+            
+            <label>Тип шерсті:</label>
+            <input type="text" name="fur_type" value="{{editingKitten.fur_type}}">
+            
+            <label>Рівень енергії (0-100):</label>
+            <input type="number" name="energy_level" min="0" value="{{editingKitten.energy_level}}">
+            
+            <button type="submit">{{#if editingKitten}}Зберегти зміни{{else}}Додати{{/if}}</button>
+            
+            {{#if editingKitten}}
+                <a href="/kittens" style="margin-left: 10px;">Скасувати</a>
+            {{/if}}
+        </form>
+    </div>
+
+    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: left;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ім'я</th>
+                <th>Порода</th>
+                <th>Колір</th>
+                <th>Шерсть</th>
+                <th>Енергія</th>
+                <th>Дата додавання</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each kittens}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.breed}}</td>
+                <td>{{this.color}}</td>
+                <td>{{this.fur_type}}</td>
+                <td>{{this.energy_level}}</td>
+                <td>{{this.created_at_date}} {{this.created_at_time}}</td>
+                <td>
+                    <a href="/kittens/edit/{{this.id}}">✏️ Редагувати</a> | 
+                    <a href="/kittens/delete/{{this.id}}" onclick="return confirm('Точно видалити?');">❌ Видалити</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/street_food.css">
+  <title>{{title}}</title>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="form-container">
+        <div class="page-back">
+          <a href="/street_food/index" class="btn btn-ghost">← Back</a>
+        </div>
+
+        <div class="form-card auth-card">
+          <div class="form-header">
+            <p class="eyebrow">Street Food</p>
+            <h1>Login</h1>
+            <p class="subtitle">Enter your account details to access the dashboard</p>
+          </div>
+
+          <form action="/street_food/login" method="POST" class="food-form" novalidate>
+            <div class="form-grid">
+              <label>
+                Username or email
+                <input
+                  type="text"
+                  name="login"
+                  value="{{item.login}}"
+                  class="{{#if fieldErrors.login}}error{{/if}}"
+                  placeholder="Enter username or email"
+                  required
+                >
+                {{#if fieldErrors.login}}
+                  <span class="field-error">{{fieldErrors.login}}</span>
+                {{/if}}
+              </label>
+
+              <label>
+                Password
+                <input
+                  type="password"
+                  name="password"
+                  class="{{#if fieldErrors.password}}error{{/if}}"
+                  placeholder="Enter password"
+                  required
+                >
+                {{#if fieldErrors.password}}
+                  <span class="field-error">{{fieldErrors.password}}</span>
+                {{/if}}
+              </label>
+            </div>
+
+            <div class="form-actions auth-actions">
+              <a href="/street_food/register" class="btn btn-ghost">Create account</a>
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

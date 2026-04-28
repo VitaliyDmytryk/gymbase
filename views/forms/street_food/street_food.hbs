@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/street_food.css">
+  <title>{{title}}</title>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+
+      {{#if isForm}}
+        <div class="form-container">
+          <div class="page-back">
+            <a href="/street_food" class="btn btn-primary">GO BACK</a>
+          </div>
+
+          <div class="form-card">
+            <div class="form-header">
+              <p class="eyebrow">Dashboard</p>
+              <h1>{{pageTitle}}</h1>
+              <p class="subtitle">Fill in the fields below</p>
+            </div>
+
+            <form action="{{action}}" method="POST" class="food-form" novalidate>
+              <div class="form-grid">
+                <label>
+                  Food name
+                  <input
+                    type="text"
+                    name="food_name"
+                    value="{{item.food_name}}"
+                    class="{{#if fieldErrors.food_name}}error{{/if}}"
+                    required
+                  >
+                  {{#if fieldErrors.food_name}}
+                    <span class="field-error">{{fieldErrors.food_name}}</span>
+                  {{/if}}
+                </label>
+
+                <label class="country-field">
+                  Country
+                  <div class="country-select">
+                    <input
+                      type="text"
+                      id="countryInput"
+                      name="country"
+                      value="{{item.country}}"
+                      autocomplete="off"
+                      required
+                      placeholder="Start typing country..."
+                      class="{{#if fieldErrors.country}}error{{/if}}"
+                    >
+                    <div class="country-dropdown" id="countryDropdown"></div>
+                  </div>
+                  {{#if fieldErrors.country}}
+                    <span class="field-error">{{fieldErrors.country}}</span>
+                  {{/if}}
+                </label>
+
+                <label>
+                  Image URL
+                  <input
+                    type="text"
+                    name="image_url"
+                    value="{{item.image_url}}"
+                    placeholder="https://example.com/photo.jpg"
+                  >
+                </label>
+
+                <label>
+                  Spicy level
+                  <input
+                    type="number"
+                    name="spicy_level"
+                    min="0"
+                    max="10"
+                    value="{{item.spicy_level}}"
+                    class="{{#if fieldErrors.spicy_level}}error{{/if}}"
+                  >
+                  {{#if fieldErrors.spicy_level}}
+                    <span class="field-error">{{fieldErrors.spicy_level}}</span>
+                  {{/if}}
+                </label>
+
+                <label>
+                  Price
+                  <input
+                    type="number"
+                    name="price"
+                    min="0.01"
+                    step="0.01"
+                    value="{{item.price}}"
+                    class="{{#if fieldErrors.price}}error{{/if}}"
+                  >
+                  {{#if fieldErrors.price}}
+                    <span class="field-error">{{fieldErrors.price}}</span>
+                  {{/if}}
+                </label>
+
+                <label>
+                  Rating
+                  <input
+                    type="number"
+                    name="rating"
+                    min="1"
+                    max="10"
+                    value="{{item.rating}}"
+                    class="{{#if fieldErrors.rating}}error{{/if}}"
+                  >
+                  {{#if fieldErrors.rating}}
+                    <span class="field-error">{{fieldErrors.rating}}</span>
+                  {{/if}}
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <a href="/street_food" class="btn btn-ghost">Cancel</a>
+                <button type="submit" class="btn btn-primary">{{buttonText}}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <script>
+          (() => {
+            const countries = {{{countries}}};
+            const countryInput = document.getElementById('countryInput');
+            const countryDropdown = document.getElementById('countryDropdown');
+
+            if (!countryInput || !countryDropdown || !Array.isArray(countries)) {
+              return;
+            }
+
+            function escapeHtml(value) {
+              return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+            }
+
+            function renderDropdown(list) {
+              if (!list.length) {
+                countryDropdown.innerHTML = '<div class="country-option empty">No matches found</div>';
+                countryDropdown.classList.add('show');
+                return;
+              }
+
+              countryDropdown.innerHTML = list
+                .slice(0, 8)
+                .map((country) => {
+                  return `<button type="button" class="country-option" data-value="${escapeHtml(country)}">${escapeHtml(country)}</button>`;
+                })
+                .join('');
+
+              countryDropdown.classList.add('show');
+            }
+
+            function filterCountries(query) {
+              const normalized = query.trim().toLowerCase();
+
+              if (!normalized) {
+                return countries.slice(0, 8);
+              }
+
+              return countries.filter((country) =>
+                country.toLowerCase().includes(normalized)
+              );
+            }
+
+            function openDropdown() {
+              renderDropdown(filterCountries(countryInput.value));
+            }
+
+            function closeDropdown() {
+              countryDropdown.classList.remove('show');
+            }
+
+            countryInput.addEventListener('focus', openDropdown);
+
+            countryInput.addEventListener('input', () => {
+              renderDropdown(filterCountries(countryInput.value));
+            });
+
+            countryDropdown.addEventListener('click', (event) => {
+              const option = event.target.closest('.country-option[data-value]');
+              if (!option) return;
+
+              countryInput.value = option.dataset.value;
+              closeDropdown();
+              countryInput.focus();
+            });
+
+            document.addEventListener('click', (event) => {
+              const insideCountrySelect = event.target.closest('.country-select');
+              if (!insideCountrySelect) {
+                closeDropdown();
+              }
+            });
+
+            countryInput.addEventListener('keydown', (event) => {
+              if (event.key === 'Escape') {
+                closeDropdown();
+              }
+            });
+          })();
+        </script>
+
+      {{else}}
+
+        <div class="page-back">
+          <a href="/street_food/index" class="btn btn-primary">GO BACK</a>
+        </div>
+
+        <div class="topbar">
+          <div>
+            <p class="eyebrow">Dashboard</p>
+            <h1>Street Food</h1>
+            <p class="subtitle">Manage your food list in one place</p>
+          </div>
+
+          <div class="preview-auth">
+            <a href="/street_food/new" class="btn btn-primary">+ Add food</a>
+            <form action="/street_food/logout" method="POST" class="inline-form">
+              <button type="submit" class="btn btn-ghost">Logout</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="food-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Food name</th>
+                <th>Country</th>
+                <th>Price</th>
+                <th>Spicy</th>
+                <th>Rating</th>
+                <th>Date</th>
+                <th class="actions-head">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {{#if food.length}}
+                {{#each food}}
+                  <tr>
+                    <td class="muted" data-label="ID">{{id}}</td>
+                    <td class="food-name" data-label="Food name">{{food_name}}</td>
+                    <td data-label="Country">{{country}}</td>
+                    <td data-label="Price">{{formatted_price}}</td>
+                    <td data-label="Spicy"><span class="badge badge-spicy">{{spicy_level}}</span></td>
+                    <td data-label="Rating"><span class="badge badge-rating">{{rating}}</span></td>
+                    <td class="date-cell" data-label="Date">{{formatted_created_at}}</td>
+                    <td class="actions-cell" data-label="Actions">
+                      <div class="row-actions">
+                        <a href="/street_food/edit/{{id}}" class="btn btn-edit">Edit</a>
+
+                        <form
+                          action="/street_food/delete/{{id}}"
+                          method="POST"
+                          class="inline-form delete-form"
+                          data-food-name="{{food_name}}"
+                        >
+                          <button type="button" class="btn btn-delete open-delete-modal">
+                            Delete
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                {{/each}}
+              {{else}}
+                <tr>
+                  <td colspan="8" class="empty-state">No food items yet</td>
+                </tr>
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-backdrop" id="deleteModal">
+          <div class="modal-card">
+            <div class="modal-icon">!</div>
+
+            <h2 class="modal-title">Delete item?</h2>
+            <p class="modal-text">
+              You are about to delete <strong id="deleteFoodName">this item</strong>. This action cannot be undone.
+            </p>
+
+            <div class="modal-actions">
+              <button type="button" class="btn btn-ghost" id="cancelDelete">Cancel</button>
+              <button type="button" class="btn btn-delete-solid" id="confirmDelete">Yes, delete</button>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          (() => {
+            const modal = document.getElementById('deleteModal');
+            const deleteFoodName = document.getElementById('deleteFoodName');
+            const confirmDeleteBtn = document.getElementById('confirmDelete');
+            const cancelDeleteBtn = document.getElementById('cancelDelete');
+            const openDeleteButtons = document.querySelectorAll('.open-delete-modal');
+
+            if (!modal || !deleteFoodName || !confirmDeleteBtn || !cancelDeleteBtn || !openDeleteButtons.length) {
+              return;
+            }
+
+            let currentForm = null;
+
+            openDeleteButtons.forEach((button) => {
+              button.addEventListener('click', function () {
+                currentForm = this.closest('.delete-form');
+                const foodName = currentForm?.dataset.foodName || 'this item';
+
+                deleteFoodName.textContent = foodName;
+                modal.classList.add('is-open');
+              });
+            });
+
+            cancelDeleteBtn.addEventListener('click', function () {
+              modal.classList.remove('is-open');
+              currentForm = null;
+            });
+
+            confirmDeleteBtn.addEventListener('click', function () {
+              if (currentForm) {
+                currentForm.submit();
+              }
+            });
+
+            modal.addEventListener('click', function (event) {
+              if (event.target === modal) {
+                modal.classList.remove('is-open');
+                currentForm = null;
+              }
+            });
+
+            document.addEventListener('keydown', function (event) {
+              if (event.key === 'Escape') {
+                modal.classList.remove('is-open');
+                currentForm = null;
+              }
+            });
+          })();
+        </script>
+
+      {{/if}}
+
+    </div>
+  </div>
+</body>
+</html>

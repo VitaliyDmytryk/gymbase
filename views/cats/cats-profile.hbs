@@ -395,14 +395,14 @@
                 <td style="font-size: 10px; opacity: 0.6;">{{this.id}}</td>
                 <td>{{this.name}}</td>
                 <td>{{this.breed}}</td>
-                <td>{{this.age_years}}</td>
-                <td>{{this.weight_kg}}</td>
+                <td>{{this.age}} Y </td>
+                <td>{{this.weight}} kg</td>
                 <td>{{this.favorite_food}}</td>
-                <td>{{#if this.has_microchip}}YES{{else}}NO{{/if}}</td>
-                <td style="font-size: 10px;">{{this.owner_contact}}</td>
+                <td>{{#if this.hasMicrochip}}YES{{else}}NO{{/if}}</td>
+                <td style="font-size: 10px;">{{this.ownerContact}}</td>
                 <td
                   style="font-size: 10px; max-width: 150px;"
-                >{{this.character_notes}}</td>
+                >{{this.characterNotes}}</td>
                 <td>
                 <div class="btn-action-group">
                   <a href="/cats/edit-form/{{this.id}}?user={{../username}}" class="btn-style">EDIT</a>

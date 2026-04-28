@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/street_food.css">
+  <title>{{title}}</title>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="page-back">
+        <a href="/" class="btn btn-ghost">← Back</a>
+      </div>
+
+      <div class="topbar preview-topbar">
+        <div>
+          <p class="eyebrow">Street Food</p>
+          <h1>Explore food list</h1>
+          <p class="subtitle">
+            Public preview of all items. Login or register to manage your own list.
+          </p>
+        </div>
+
+        <div class="preview-auth">
+          {{#if user}}
+            <a href="/street_food" class="btn btn-primary">Dashboard</a>
+            <form action="/street_food/logout" method="POST" class="inline-form">
+              <button type="submit" class="btn btn-ghost">Logout</button>
+            </form>
+          {{else}}
+            <a href="/street_food/login" class="btn btn-ghost">Login</a>
+            <a href="/street_food/register" class="btn btn-primary">Register</a>
+          {{/if}}
+        </div>
+      </div>
+
+      {{#if food.length}}
+        <div class="preview-grid">
+          {{#each food}}
+            <article class="preview-card">
+              <div class="preview-card-image">
+                {{#if image_url}}
+                  <img src="{{image_url}}" alt="{{food_name}}" class="preview-image">
+                {{else}}
+                  <div class="preview-image-placeholder">
+                    <span>No photo</span>
+                  </div>
+                {{/if}}
+              </div>
+
+              <div class="preview-card-body">
+                <div class="preview-card-top">
+                  <div class="preview-price">{{formatted_price}}</div>
+                </div>
+
+                <h3 class="preview-food-name">{{food_name}}</h3>
+                <p class="preview-food-country">{{country}}</p>
+              </div>
+            </article>
+          {{/each}}
+        </div>
+      {{else}}
+        <div class="empty-state preview-empty">
+          <h3>No food items yet</h3>
+          <p>The list will appear here when data is added.</p>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<button 
+    style="background-color: rgb(242, 130, 208)">
+    <a style="color:#ffffff" href="/dhd">
+        GO BACK
+    </a>
+</button>
+
+<form method="POST" action="{{action}}">
+    <fieldset>
+        <label>
+            Character Name
+            <input type="text" name="username" placeholder="Character Name" aria-required="true" />
+        </label>
+        
+        <label>
+            Favorite Season
+            <input type="season" name="season" placeholder="Favorite Season" step="1" min="1" max="8" aria-required="true" />
+        </label>
+        
+        <label>
+            Reason
+            <input type="text" name="reason" placeholder="reason" aria-required="true" />
+        </label>
+        
+        <label>
+            Character Notes
+            <input type="text" name="character_notes" placeholder="Your Character Notes" aria-required="true" />
+        </label>
+        
+        
+    <input
+            type="submit"
+            value="SAVE"
+    />
+</form>

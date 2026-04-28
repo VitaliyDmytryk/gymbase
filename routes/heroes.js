@@ -2,16 +2,45 @@ import express from 'express';
 const router = express.Router();
 import db from '../db/connector.js';
 
+// Створення класу  
+class HeroData {
+  constructor({ id, name, primary_attribute, role, attack_type, created_at }) {
+    this.id = id;
+    this.name = name || "Unknown";
+    this.primary_attribute = primary_attribute || "Unknown";
+    this.role = role || "Unknown";
+    this.attack_type = attack_type || "Unknown";
+    
+    // Зберігаємо оригінальне поле на всяк випадок
+    this.created_at = created_at; 
+    
+    // Форматуємо дату та час так (в стаса пілглянув)
+    this.created_at_time = created_at ? new Date(created_at).toLocaleTimeString('uk-UA') : '';
+    this.created_at_date = created_at ? new Date(created_at).toLocaleDateString('uk-UA') : '';
+  }
+
+  // Метод для дебагу в консолі 
+  display() {
+    console.log(`\n--- [HERO: ${this.name.toUpperCase()}] ---`);
+    console.table({
+      "Id": this.id,
+      "Attribute": this.primary_attribute,
+      "Role": this.role,
+      "Attack Type": this.attack_type,
+      "Time": this.created_at_time,
+      "Date": this.created_at_date
+    });
+    console.log("-----------------------");
+  }
+}
+// --------------------
+
 router.get('/', async function(req, res, next) {
   try {
     const heroes = await db.query('SELECT * FROM heroes ORDER BY id ASC');
-    const rowheroes = heroes.rows.map(s => {
-      return {
-        ...s,
-        created_at_time: s.created_at ? s.created_at.toLocaleTimeString() : '', 
-        created_at_date: s.created_at ? s.created_at.toLocaleDateString() : ''
-      }
-    });
+    
+    const rowheroes = heroes.rows.map(row => new HeroData(row));
+    
     res.render('heroes', { heroes: rowheroes || [] });
   } catch (err) {
     console.error("Помилка отримання даних:", err.message);
@@ -54,9 +83,11 @@ router.get("/edit/:id", async (req, res) => {
       return res.status(404).send("Hero not found");
     }
 
+    const hero = new HeroData(result.rows[0]);
+
     res.render("forms/heroes_form", { 
       isEdit: true, 
-      hero: result.rows[0] 
+      hero: hero 
     });
   } catch (err) {
     console.error("Помилка бази даних:", err.message);

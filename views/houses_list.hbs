@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estate| Менеджмент об'єктів</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card-bg: #1e293b; 
+            --header-bg: #ffffff;
+            --accent: #3b82f6;
+            --text-white: #ffffff;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+        }
+
+
+
+
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: #1e293b;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 { font-size: 24px; font-weight: 700; margin: 0; color: #0f172a; }
+
+        .btn-add {
+            background: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-add:hover { background: #2563eb; transform: translateY(-1px); }
+
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 10px;
+            border: 1px solid var(--border);
+        }
+
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+
+        th {
+            padding: 12px 20px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+        }
+
+        
+        tbody tr {
+            background-color: var(--card-bg);
+            transition: 0.2s;
+        }
+
+        tbody tr td {
+            padding: 16px 20px;
+            color: var(--text-white) !important; 
+            font-size: 15px;
+        }
+
+        
+        tbody tr td:first-child { border-radius: 12px 0 0 12px; }
+        tbody tr td:last-child { border-radius: 0 12px 12px 0; }
+
+        .td-number { font-weight: 600; color: var(--text-white) !important; }
+        .td-muted { color: #cbd5e1 !important; }
+
+        .icon-check { color: #4ade80; font-weight: bold; }
+        .icon-cross { color: #fb7185; opacity: 0.6; }
+
+        .actions { display: flex; gap: 8px; justify-content: flex-end; }
+        .btn-action {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn-action:hover { background: rgba(255,255,255,0.2); }
+        .btn-delete:hover { background: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Estate <span>/ Менеджмент</span></h1>
+            <a href="/houses/add" class="btn-add">+ Додати об'єкт</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Вулиця</th>
+                        <th>Площа (м²)</th>
+                        <th>Кімнати</th>
+                        <th>Поверхи</th>
+                        <th>Колір</th>
+                        <th>Ділянка</th>
+                        <th>Гараж</th>
+                        <th>Ремонт</th>
+                        <th style="text-align: right;">Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each items}}
+                    <tr>
+                        <td style="font-weight: 600;">{{street}}</td>
+                        <td class="td-number">{{house_area}}</td>
+                        <td class="td-number">{{rooms_count}}</td>
+                        <td class="td-number">{{floors_count}}</td>
+                        <td class="td-muted">{{house_color}}</td>
+                        <td class="td-number">{{plot_area}}</td>
+                        <td>{{#if has_garage}}<span class="icon-check">✓</span>{{else}}<span class="icon-cross">✕</span>{{/if}}</td>
+                        <td>{{#if is_renovated}}<span class="icon-check">✓</span>{{else}}<span class="icon-cross">✕</span>{{/if}}</td>
+                        <td class="actions">
+                            <a href="/houses/edit/{{id}}" class="btn-action">✏️</a>
+                            <a href="/houses/delete/{{id}}" class="btn-action btn-delete" onclick="return confirm('Видалити?')">🗑</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/street_food.css">
+  <title>{{title}}</title>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="form-container">
+        <div class="page-back">
+          <a href="/street_food/index" class="btn btn-ghost">← Back</a>
+        </div>
+
+        <div class="form-card auth-card">
+          <div class="form-header">
+            <p class="eyebrow">Street Food</p>
+            <h1>Register</h1>
+            <p class="subtitle">Create a new account to manage your own food list</p>
+          </div>
+
+          <form action="/street_food/register" method="POST" class="food-form" novalidate>
+            <div class="form-grid">
+              <label>
+                Username
+                <input
+                  type="text"
+                  name="username"
+                  value="{{item.username}}"
+                  class="{{#if fieldErrors.username}}error{{/if}}"
+                  placeholder="Enter username"
+                  required
+                >
+                {{#if fieldErrors.username}}
+                  <span class="field-error">{{fieldErrors.username}}</span>
+                {{/if}}
+              </label>
+
+              <label>
+                Email
+                <input
+                  type="email"
+                  name="email"
+                  value="{{item.email}}"
+                  class="{{#if fieldErrors.email}}error{{/if}}"
+                  placeholder="Enter email"
+                  required
+                >
+                {{#if fieldErrors.email}}
+                  <span class="field-error">{{fieldErrors.email}}</span>
+                {{/if}}
+              </label>
+
+              <label>
+                Password
+                <input
+                  type="password"
+                  name="password"
+                  class="{{#if fieldErrors.password}}error{{/if}}"
+                  placeholder="Create password"
+                  required
+                >
+                {{#if fieldErrors.password}}
+                  <span class="field-error">{{fieldErrors.password}}</span>
+                {{/if}}
+              </label>
+
+              <label>
+                Confirm password
+                <input
+                  type="password"
+                  name="confirm_password"
+                  class="{{#if fieldErrors.confirm_password}}error{{/if}}"
+                  placeholder="Repeat password"
+                  required
+                >
+                {{#if fieldErrors.confirm_password}}
+                  <span class="field-error">{{fieldErrors.confirm_password}}</span>
+                {{/if}}
+              </label>
+            </div>
+
+            <div class="form-actions auth-actions">
+              <a href="/street_food/login" class="btn btn-ghost">Already have account?</a>
+              <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
