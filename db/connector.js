@@ -66,7 +66,19 @@ createTableQueries.push(`
   `);
 
 createTableQueries.push(`
-    CREATE TABLE IF NOT EXISTS street_food_users (
+    CREATE TABLE IF NOT EXISTS pesyki (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      breed TEXT NOT NULL,
+      age INTEGER NOT NULL,
+      vaccinated BOOLEAN DEFAULT FALSE,
+      shelter TEXT NOT NULL,
+      photo TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  createTableQueries.push(`
+  CREATE TABLE IF NOT EXISTS street_food_users (
         id SERIAL PRIMARY KEY,
         username TEXT UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,

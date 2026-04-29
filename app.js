@@ -24,6 +24,7 @@ import productRouter from './routes/product.js'
 import batmanRouter from './routes/batman.js'
 import barRouter from './routes/bar.js'
 import accountsRouter from './routes/accounts.js'
+import pesykiRouter from './routes/pesyki.js'
 import brawlerRouter from './routes/brawlstars.js';
 import housesRouter from './routes/houses.js';
 import spotifyRouter from './routes/spotify.js';
@@ -72,6 +73,7 @@ app.use('/product', productRouter);
 app.use('/villains', batmanRouter);
 app.use('/bar', barRouter);
 app.use('/accounts', accountsRouter);
+app.use('/pesyki', pesykiRouter);
 app.use('/brawlers', brawlerRouter);
 
 app.use('/houses', housesRouter);

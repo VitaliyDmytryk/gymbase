@@ -49,6 +49,12 @@ web_modules/
 # TypeScript cache
 *.tsbuildinfo
 
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
 # Optional npm cache directory
 .npm
 
@@ -131,3 +137,5 @@ dist
 .pnp.*
 
 /.idea/
+.DS_Store
+**/.DS_Store
